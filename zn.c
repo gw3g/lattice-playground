@@ -18,9 +18,8 @@
 #define N 10
 
 double complex link[N][N][N][N][4]        ;   // N**4 array
-int        calls = 10000000          ;   // MC calls
-int        zn    = 0;
-           /*srand(time(NULL))    ;*/
+int        calls = 10000000               ;   // MC calls
+int        zn    = 0                      ;   // if 0 --> U(1)
 
 /*-----------------------------------------------------------------------------------------------*/
 
@@ -57,7 +56,6 @@ void shift( int x[], int d, int steps) {
    * x = steps      (can be neg)
    */
   x[d] = (  x[d]  +  steps +N ) % N;
-  /*if (x[d]<0) x[d]+=N;*/
   return;
 }
 
