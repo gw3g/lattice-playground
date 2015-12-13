@@ -1,7 +1,7 @@
 /*
  * Author: greg jackson
  * Date: Dec 08 2015
- * Z_N gauge theory on a 2D lattice
+ * Z_N gauge theory on a 3D lattice
  *
  */
 
@@ -17,8 +17,8 @@
 
 #define N 10
 
-double complex link[N][N][2]        ;   // N**4 array
-int        calls = 100000               ;   // MC calls
+double complex link[N][N][N][4]        ;   // N**4 array
+int        calls = 100000                ;   // MC calls
 int        zn    = 2                      ;   // if 0 --> U(1)
 
 /*-----------------------------------------------------------------------------------------------*/
@@ -30,16 +30,18 @@ void ic(int h) {
    *
    * general link elements are
    */
-  int x[2];
+  int x[3];
   for (x[0]=0; x[0]<N; x[0]++)  {
   for (x[1]=0; x[1]<N; x[1]++)    {
+  for (x[2]=0; x[2]<N; x[2]++)      {
 
-    for (int d=0; d<2; d++) {
+    for (int d=0; d<3; d++) {
 
-                    if (h== 0) link[ x[0] ][ x[1] ][d] = ( rand() % 2 )*2-1   ;
-                    if (h==+1) link[ x[0] ][ x[1] ][d] =  1                   ;
-               else if (h==-1) link[ x[0] ][ x[1] ][d] = -1                   ;
+                    if (h== 0) link[ x[0] ][ x[1] ][ x[2] ][d] = ( rand() % 2 )*2-1   ;
+                    if (h==+1) link[ x[0] ][ x[1] ][ x[2] ][d] =  1                   ;
+               else if (h==-1) link[ x[0] ][ x[1] ][ x[2] ][d] = -1                   ;
 
+            }
       }
     }
   }
@@ -60,32 +62,31 @@ double update(double beta, int x[], int d) {
   double S=0., Spl=1.;
   double prob, action; 
 
-  for (int dp=0; dp<2; dp++)    {
+  for (int dp=0; dp<3; dp++)    {
     if (dp!=d)                    {
         // assume this link is +1
         //                              [ redo later for `streamlined code' ]
 
       shift(x, dp,  -1);
-      Spl  = link[ x[0] ][ x[1] ][dp];
-      Spl *= link[ x[0] ][ x[1] ][d ];
+      Spl  = link[ x[0] ][ x[1] ][ x[2] ][dp];
+      Spl *= link[ x[0] ][ x[1] ][ x[2] ][d ];
       shift(x, d,  +1);
-      Spl *= link[ x[0] ][ x[1] ][dp];
+      Spl *= link[ x[0] ][ x[1] ][ x[2] ][dp];
 
       S   += Spl;
 
       shift(x, dp, +1);
-      Spl  = link[ x[0] ][ x[1] ][dp];
+      Spl  = link[ x[0] ][ x[1] ][ x[2] ][dp];
       shift(x, dp, +1);
       shift(x, d,  -1);
-      Spl *= link[ x[0] ][ x[1] ][d ];
+      Spl *= link[ x[0] ][ x[1] ][ x[2] ][d ];
       shift(x, dp, -1);
-      Spl *= link[ x[0] ][ x[1] ][dp];
+      Spl *= link[ x[0] ][ x[1] ][ x[2] ][dp];
 
       S   += Spl;
 
     }
-  }
-
+  } 
 
   if (zn==0) {
     uij = cexp( I*2*M_PI*((double) (rand()))/(double) RAND_MAX);
@@ -95,7 +96,7 @@ double update(double beta, int x[], int d) {
   }
 
 
-  double dS = -creal( S*(uij - link[ x[0] ][ x[1] ][d] ) );
+  double dS = -creal( S*(uij - link[ x[0] ][ x[1] ][ x[2] ][d] ) );
   action = 0.;
 
   // Boltzmann factor
@@ -103,11 +104,11 @@ double update(double beta, int x[], int d) {
   /*prob = prob/( prob + (1./prob) );*/
 
   if ( ( (float) rand() )/RAND_MAX < prob ) {
-    link[ x[0] ][ x[1] ][d] = uij;
+    link[ x[0] ][ x[1] ][ x[2] ][d] = uij;
     action += creal( S*uij );
   }
   else {
-    action += creal( S*link[ x[0] ][ x[1] ][d] );
+    action += creal( S*link[ x[0] ][ x[1] ][ x[2] ][d] );
   }
 
 
@@ -127,19 +128,20 @@ double update(double beta, int x[], int d) {
 
 double sweep( double beta ) {
 
-  int       x[2], d;
+  int       x[3], d;
   double action = 0.0;
 
   for (int run=0; run<calls; run++)  {
 
     x[0] = rand() % N;
     x[1] = rand() % N;
-    d    = rand() % 2;
+    x[2] = rand() % N;
+    d    = rand() % 3;
 
     action += update( beta, x, d );
   }
 
-  action /= 2.*((double) calls);
+  action /= 4.*((double) calls);
   return 1. - action;
 
 }
@@ -156,7 +158,7 @@ int main() {
 
   double beta = .0, db = .05, S;
 
-  sprintf(fname, "out/z%d, 2D, heat.dat", zn);
+  sprintf(fname, "out/z%d, 3D, heat.dat", zn);
   file = fopen(fname, "w+");
   for(beta = 0.0; beta<2.1+db; beta+=db) {
     S = sweep(beta);
@@ -167,7 +169,7 @@ int main() {
 
   printf("\n\n");
 
-  sprintf(fname, "out/z%d, 2D, cool.dat", zn);
+  sprintf(fname, "out/z%d, 3D, cool.dat", zn);
   file = fopen(fname, "w+");
   for(beta = 2.1; beta>0.0-db; beta-=db) {
     S = sweep(beta);
