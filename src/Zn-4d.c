@@ -4,12 +4,7 @@
  * Z_N gauge theory on a 4D lattice
  *
  */
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <math.h>
-#include <complex.h>
+#include "../include/core.h"
 
 /*-----------------------------------------------------------------------------------------------*/
 
@@ -61,7 +56,7 @@ void shift( int x[], int d, int steps) {
 
 double update(double beta, int x[], int d) {
   double complex uij;
-  double S=0., Spl=1.;
+  double complex S=0., Spl=1.;
   double prob, action; 
 
   for (int dp=0; dp<4; dp++)    {
@@ -150,38 +145,38 @@ double sweep( double beta ) {
 }
 
 
-/*-----------------------------------------------------------------------------------------------*/
+/*[>-----------------------------------------------------------------------------------------------<]*/
 
-FILE *file; char fname[40];
+/*FILE *file; char fname[40];*/
 
-int main() {
+/*int main();*/
 
-  srand(time(NULL))    ;
-  ic(1);
+  /*srand(time(NULL))    ;*/
+  /*ic(1);*/
 
-  double beta = .0, db = .05, S;
+  /*double beta = .0, db = .05, S;*/
 
-  sprintf(fname, "out/z%d, 4D, heat.dat", zn);
-  file = fopen(fname, "w+");
-  for(beta = 0.0; beta<2.1+db; beta+=db) {
-    S = sweep(beta);
-    printf(       "%g\t %.8f\n", beta, S );
-    fprintf(file, "%g\t %.8f\n", beta, S );
-  }
-  fclose(file);
+  /*sprintf(fname, "out/z%d, 4D, heat.dat", zn);*/
+  /*file = fopen(fname, "w+");*/
+  /*for(beta = 0.0; beta<2.1+db; beta+=db) {*/
+    /*S = sweep(beta);*/
+    /*printf(       "%g\t %.8f\n", beta, S );*/
+    /*fprintf(file, "%g\t %.8f\n", beta, S );*/
+  /*}*/
+  /*fclose(file);*/
 
-  printf("\n\n");
+  /*printf("\n\n");*/
 
-  sprintf(fname, "out/z%d, 4D, cool.dat", zn);
-  file = fopen(fname, "w+");
-  for(beta = 2.1; beta>0.0-db; beta-=db) {
-    S = sweep(beta);
-    printf(       "%g\t %.8f\n", beta, S );
-    fprintf(file, "%g\t %.8f\n", beta, S );
-  }
-  fclose(file);
+  /*sprintf(fname, "out/z%d, 4D, cool.dat", zn);*/
+  /*file = fopen(fname, "w+");*/
+  /*for(beta = 2.1; beta>0.0-db; beta-=db) {*/
+    /*S = sweep(beta);*/
+    /*printf(       "%g\t %.8f\n", beta, S );*/
+    /*fprintf(file, "%g\t %.8f\n", beta, S );*/
+  /*}*/
+  /*fclose(file);*/
 
-  return 0;
-}
+  /*return 0;*/
+/*}*/
 
 
