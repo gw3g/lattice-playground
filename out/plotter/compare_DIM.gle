@@ -1,0 +1,77 @@
+size 13 9
+set lwidth 0.06
+set cap round
+!set font psncsi
+set hei 0.6
+
+amove 2 1.5
+set texlabels 1
+begin graph
+  size 10 7 fullsize
+
+  xlabels font psncsr hei 0.5
+  xticks length 0.25
+  ylabels font psncsr hei 0.5
+  yticks length 0.25
+
+  xaxis min -0.1 max 2.2 dticks 0.2
+  xtitle "$\beta$" hei 0.5 font psncsi dist 0.3
+  yaxis min -0.1 max 1.1 dticks .2
+  ytitle "$\left< E \right>$" hei 0.6 font psncsi dist 0.1
+
+  let d4 = 0               from 0 to 1.5
+  data "z2, 2D, heat.dat" comment # d11 = c1, c2
+  data "z2, 2D, cool.dat" comment # d12 = c1, c2
+
+  data "z2, 3D, heat.dat" comment # d13 = c1, c2
+  data "z2, 3D, cool.dat" comment # d14 = c1, c2
+
+  data "z2, 4D, heat.dat" comment # d15 = c1, c2
+  data "z2, 4D, cool.dat" comment # d16 = c1, c2
+
+  d4 line             color 0.8 lstyle 1 lwidth 0.05
+  d11 line smooth color royalblue lstyle 1 lwidth 0.1
+  d12 line smooth color royalblue lstyle 4 lwidth 0.1
+
+  d13 line smooth color orange lstyle 1 lwidth 0.1
+  d14 line smooth color orange lstyle 4 lwidth 0.1
+
+  d15 line smooth color crimson lstyle 1 lwidth 0.1
+  d16 line smooth color crimson lstyle 4 lwidth 0.1
+end graph
+
+set hei 0.4
+set font psncsr
+begin key
+  compact
+  position tr
+  nobox
+  offset 0.9 2.
+  text "" line color royalblue lstyle 1 lwidth 0.1
+  text "" line color royalblue lstyle 4 lwidth 0.1
+  separator
+  text "" line color orange lstyle 1 lwidth 0.1
+  text "" line color orange lstyle 4 lwidth 0.1
+  separator
+  text "heating" line color crimson lstyle 1 lwidth 0.1
+  text "cooling" line color crimson lstyle 4 lwidth 0.1
+end key
+
+amove 4.2 7.5
+text dimension:
+rmove 2.4 0
+text \tex{$2$}
+rmove 1.2 0
+text \tex{$3$}
+rmove 1.2 0
+text \tex{$4$}
+
+
+amove 5.3 6.7
+text calls:
+rmove 1.2 0
+text \tex{$10^5$}
+rmove 1.2 0
+text \tex{$10^5$}
+rmove 1.2 0
+text \tex{$10^6$}
