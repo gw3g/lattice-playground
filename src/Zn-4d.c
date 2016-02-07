@@ -54,12 +54,12 @@ void shift( int x[], int d, int steps) {
   return;
 }
 
-double update(double beta, int x[], int d) {
+double update(double beta, int x[], int d, int dim) {
   double complex uij;
   double complex S=0., Spl=1.;
   double prob, action; 
 
-  for (int dp=0; dp<4; dp++)    {
+  for (int dp=0; dp<dim; dp++)    {
     if (dp!=d)                    {
         // assume this link is +1
         //                              [ redo later for `streamlined code' ]
@@ -123,7 +123,7 @@ double update(double beta, int x[], int d) {
   return action;
 }
 
-double sweep( double beta ) {
+double sweep( double beta, int dim ) {
 
   int       x[4], d;
   double action = 0.0;
@@ -134,49 +134,14 @@ double sweep( double beta ) {
     x[1] = rand() % N;
     x[2] = rand() % N;
     x[3] = rand() % N;
-    d    = rand() % 4;
+    d    = rand() % dim;
 
-    action += update( beta, x, d );
+    action += update( beta, x, d, dim );
   }
 
-  action /= 6.*((double) calls);
+  action /= 2.*( ((double) dim) - 1. )*((double) calls);
   return 1. - action;
 
 }
-
-
-/*[>-----------------------------------------------------------------------------------------------<]*/
-
-/*FILE *file; char fname[40];*/
-
-/*int main();*/
-
-  /*srand(time(NULL))    ;*/
-  /*ic(1);*/
-
-  /*double beta = .0, db = .05, S;*/
-
-  /*sprintf(fname, "out/z%d, 4D, heat.dat", zn);*/
-  /*file = fopen(fname, "w+");*/
-  /*for(beta = 0.0; beta<2.1+db; beta+=db) {*/
-    /*S = sweep(beta);*/
-    /*printf(       "%g\t %.8f\n", beta, S );*/
-    /*fprintf(file, "%g\t %.8f\n", beta, S );*/
-  /*}*/
-  /*fclose(file);*/
-
-  /*printf("\n\n");*/
-
-  /*sprintf(fname, "out/z%d, 4D, cool.dat", zn);*/
-  /*file = fopen(fname, "w+");*/
-  /*for(beta = 2.1; beta>0.0-db; beta-=db) {*/
-    /*S = sweep(beta);*/
-    /*printf(       "%g\t %.8f\n", beta, S );*/
-    /*fprintf(file, "%g\t %.8f\n", beta, S );*/
-  /*}*/
-  /*fclose(file);*/
-
-  /*return 0;*/
-/*}*/
 
 

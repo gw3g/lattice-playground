@@ -13,6 +13,7 @@ OBJ	= $(patsubst $(SDIR)/%,$(ODIR)/%,$(SRC:.$(SRCEXT)=.o))
 INC	= -I include
 
 $(TARGET): $(OBJ)
+	@mkdir -p $(OUT)/data
 	@echo "Compiling : $(CC) $^ -o $(TARGET)"; $(CC) $^ -o $(TARGET)
 
 $(ODIR)/%.o: $(SDIR)/%.$(SRCEXT)
@@ -20,7 +21,7 @@ $(ODIR)/%.o: $(SDIR)/%.$(SRCEXT)
 	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
-	@echo "Cleaning : $(RM) -r $(ODIR) $(TARGET)"; $(RM) -r $(ODIR) $(TARGET); $(RM) -r $(OUT)/*.dat;
+	@echo "Cleaning : $(RM) -r $(ODIR) $(TARGET)"; $(RM) -r $(ODIR) $(TARGET); $(RM) -r $(OUT)/data;
 
 # auxiliary compiles go here:
 

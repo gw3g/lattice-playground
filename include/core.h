@@ -17,5 +17,5 @@ extern int            zn                         ;   // if 0 --> U(1)
 /*-----------------------------------------------------------------------------------------------*/
 
 void ic(int);
-double update(double, int *, int );
-double sweep( double );
+double update(double, int *, int, int );
+double sweep( double, int );
