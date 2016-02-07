@@ -6,17 +6,26 @@
 double db = .05;
 FILE *file; char fname[40];
 
-void eval_cool( double Bi, double Bf) {
+void eval_run( double Bi, double Bf, int dim) {
   ic(1);
 
-  double beta = .0, db = .05, S;
+  double beta, S;
 
-  sprintf(fname, "out/data/Z%d, 4D, cool.dat", zn);
-  file = fopen(fname, "w+");
-  for(beta = 0.0; beta<2.1+db; beta+=db) {
-    S = sweep(beta);
-    printf(       "%g\t %.8f\n", beta, S );
-    fprintf(file, "%g\t %.8f\n", beta, S );
+  if (Bi<Bf) {                                                      // COOLING
+    sprintf(fname, "out/data/Z%d, %dD, cool.csv", zn, dim);
+    file = fopen(fname, "w+");
+    for (beta=Bi; beta<Bf+db; beta+=db) 
+        {   S = sweep(beta, dim);    
+            fprintf(file, "%.8f, %.8f\n", beta, S );
+            printf(       "%.8f, %.8f\n", beta, S );    }
+  }
+  else if (Bi>Bf) {                                                 // HEATING
+    sprintf(fname, "out/data/Z%d, %dD, heat.csv", zn, dim);
+    file = fopen(fname, "w+");
+    for (beta=Bi; beta>Bf-db; beta-=db) 
+        {   S = sweep(beta, dim);    
+            fprintf(file, "%.8f, %.8f\n", beta, S );
+            printf(       "%.8f, %.8f\n", beta, S );    }
   }
   fclose(file);                                                                             return;
 }
@@ -26,29 +35,12 @@ void eval_cool( double Bi, double Bf) {
 int main() {
 
   srand(time(NULL))    ;
-  ic(1);
 
-  double beta = .0, db = .05, S;
+  /*eval_run(.0, 2.1, 4);*/
+  /*eval_run(2.1, .0, 4);*/
 
-  sprintf(fname, "out/data/z%d, 4D, heat.dat", zn);
-  file = fopen(fname, "w+");
-  for(beta = 0.0; beta<2.1+db; beta+=db) {
-    S = sweep(beta);
-    printf(       "%g\t %.8f\n", beta, S );
-    fprintf(file, "%g\t %.8f\n", beta, S );
-  }
-  fclose(file);
-
-  printf("\n\n");
-
-  sprintf(fname, "out/data/z%d, 4D, cool.dat", zn);
-  file = fopen(fname, "w+");
-  for(beta = 2.1; beta>0.0-db; beta-=db) {
-    S = sweep(beta);
-    printf(       "%g\t %.8f\n", beta, S );
-    fprintf(file, "%g\t %.8f\n", beta, S );
-  }
-  fclose(file);
+  eval_run(.0, 2.1, 2);
+  eval_run(2.1, .0, 2);
 
   return 0;
 }
