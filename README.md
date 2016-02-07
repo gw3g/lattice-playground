@@ -8,7 +8,7 @@ following original `roots' of lattice qcd: [Mike Creutz et al, PRL 1979](http://
 
 ## visualisation
 
-data is written to ``~/out/data/``. Pretty pictures using ``GLE'', can compile
+data is written to ``~/out/data/``. Pretty pictures using [GLE](http://glx.sourceforge.net/), can compile
 directly by running ``make plotter`` after the main executable has been run. See the
 makefile for details.
 
