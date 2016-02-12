@@ -21,8 +21,8 @@ begin graph
 
   let d4 = 0               from 0 to 1.5
   !let d3 = 1/(4.*x)        from 0 to 3.5
-  data "../data/Z2, 4D, heat.csv" comment # d11 = c1, c2
-  data "../data/Z2, 4D, cool.csv" comment # d12 = c1, c2
+  data "../data/Z2_heat_(d=4, N=10).csv" comment # d11 = c1, c2
+  data "../data/Z2_cool_(d=4, N=10).csv" comment # d12 = c1, c2
 
   d4 line             color 0.8 lstyle 1 lwidth 0.05
   d3 line             color 0.8 lstyle 1 lwidth 0.05

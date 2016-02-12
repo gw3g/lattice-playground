@@ -1,22 +1,19 @@
 /*
  * Author: greg jackson
  * Date: Dec 03 2015
- * Z_N gauge theory on a 4D lattice
+ * Z_N gauge theory on a d<=4 lattice
  *
  */
 #include "../include/core.h"
 
 /*-----------------------------------------------------------------------------------------------*/
 
-/* external parameters */
-
-#define N 10
-
-double complex link[N][N][N][N][4]        ;   // N**4 array
-int        calls = 1000000                ;   // MC calls
-int        zn    = 2                      ;   // if 0 --> U(1)
+/*double complex *link                      ;*/
+/*int            calls                      ;*/
+/*int            zn                         ;*/
 
 /*-----------------------------------------------------------------------------------------------*/
+
 
 void ic(int h) {
   /*

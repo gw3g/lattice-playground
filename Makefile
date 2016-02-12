@@ -13,6 +13,7 @@ OBJ	= $(patsubst $(SDIR)/%,$(ODIR)/%,$(SRC:.$(SRCEXT)=.o))
 INC	= -I include
 
 $(TARGET): $(OBJ)
+	@mkdir -p bin
 	@mkdir -p $(OUT)/data
 	@echo "Compiling : $(CC) $^ -o $(TARGET)"; $(CC) $^ -o $(TARGET)
 
@@ -25,8 +26,10 @@ clean:
 
 # auxiliary compiles go here:
 
-plotter:
+plotter1:
 	gle -o "out/Z2_D4.pdf" -d pdf "out/plotter/Z2_D4.gle"
+plotter2:
+	gle -o "out/compare_DIM.pdf" -d pdf "out/plotter/compare_DIM.gle"
 
 .PHONY: clean
 
