@@ -33,5 +33,9 @@ plotter2:
 plotter3:
 	gle -o "out/U(1)_D4.pdf" -d pdf "out/plotter/U(1)_D4.gle"
 
+# test
+tester: $(OBJ)
+	$(CC) $(CFLAGS) $(INC) build/matrix.o spike/mat_test.c $(BIN) -o bin/tester
+
 .PHONY: clean
 
