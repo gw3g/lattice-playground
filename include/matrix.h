@@ -4,7 +4,7 @@
 
 /*-----------------------------------------------------------------------------------------------*/
 
-#define Nc 4
+#define Nc 3
 
 /*-----------------------------------------------------------------------------------------------*/
 
@@ -24,6 +24,9 @@ void conj_m(double complex A[Nc][Nc]);                                // A -> co
 
 double complex det_m(double complex A[Nc][Nc]);                       // returns det(A)
 
+double complex trace(double complex A[Nc][Nc]);                       // returns tr(A)
+
 void gramschmidt(double complex A[Nc][Nc]);                           // Gram-Schmidt reduce A
 
 void suN_m(double complex A[Nc][Nc]);                                 // project into SU(Nc) 
+

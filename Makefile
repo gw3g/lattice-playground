@@ -32,6 +32,8 @@ plotter2:
 	gle -o "out/compare_DIM.pdf" -d pdf "out/plotter/compare_DIM.gle"
 plotter3:
 	gle -o "out/U(1)_D4.pdf" -d pdf "out/plotter/U(1)_D4.gle"
+plotter4:
+	gle -o "out/tr_SU(N).pdf" -d pdf "out/plotter/tr_U.gle"
 
 # test
 tester: $(OBJ)

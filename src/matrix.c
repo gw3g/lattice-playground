@@ -59,6 +59,12 @@ double complex det_m(double complex A[Nc][Nc]) {
   return d;
 }
 
+double complex trace( double complex A[Nc][Nc] ) {
+  double complex tr = A[0][0];
+  for (int i=1; i<Nc; i++) tr += A[i][i];
+  return tr;
+}
+
 void gramschmidt(double complex A[Nc][Nc]) {
   double complex dot, norm;
   for (int i=0; i<Nc; i++) {
