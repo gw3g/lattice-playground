@@ -83,7 +83,7 @@ double update(double beta, int x[], int d, int dim) {
   } 
 
   if (zn==0) {
-    uij = cexp( I*2*M_PI*((double) (rand()))/(double) RAND_MAX);
+    uij = cexp( I*2*M_PI*((double) (rand()))/( (double) RAND_MAX ));
   }
   else       {
     uij = cexp( I*2*M_PI*((double) (rand()%zn))/(double) zn);
@@ -105,18 +105,6 @@ double update(double beta, int x[], int d, int dim) {
     action += creal( S*link[ x[0] ][ x[1] ][ x[2] ][ x[3] ][d] );
   }
 
-
-  // decide...
-  /*if ( ( (float) rand() )/RAND_MAX < prob ) {*/
-    /*link[ x[0] ][ x[1] ][ x[2] ][ x[3] ][d ]  =  +1;*/
-    /*action += S;*/
-    /*action = +( (double) S);*/
-  /*}*/
-  /*else {*/
-    /*link[ x[0] ][ x[1] ][ x[2] ][ x[3] ][d ]  =  -1;*/
-    /*action -= S;*/
-    /*action = -( (double) S);*/
-  /*}*/
   return action;
 }
 
