@@ -4,7 +4,7 @@
 
 /*-----------------------------------------------------------------------------------------------*/
 
-#define Nc 3
+#define Nc 4
 
 /*-----------------------------------------------------------------------------------------------*/
 
@@ -16,11 +16,10 @@ void add_m(double complex A[Nc][Nc],  double complex B[Nc][Nc],       // add    
                                       double complex C[Nc][Nc]);
 void sub_m(double complex A[Nc][Nc],  double complex B[Nc][Nc],       // subtract A-B -> C
                                       double complex C[Nc][Nc]);
-
 void equ_m( double complex a,                                         // set A = a*Id
                                       double complex A[Nc][Nc]);
-
 void conj_m(double complex A[Nc][Nc]);                                // A -> conjugate(A)
+void dag_m(double complex A[Nc][Nc]);                                 // A -> A^\dagger
 
 double complex det_m(double complex A[Nc][Nc]);                       // returns det(A)
 

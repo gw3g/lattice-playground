@@ -6,7 +6,7 @@
 
 #include "../include/matrix.h"
 
-  void view_m(double complex  X[Nc][Nc]) {
+void view_m(double complex  X[Nc][Nc]) {
   double complex tmp;
   for (int i=0; i<Nc; i++) {
     for (int j=0; j<Nc; j++) {
@@ -44,6 +44,16 @@ void equ_m( double complex a,
 void conj_m(double complex A[Nc][Nc]) {
   for (int i=0; i<Nc; i++)
     for (int j=0; j<Nc; j++) A[i][j] = conj(A[i][j]);
+}
+
+void dag_m(double complex A[Nc][Nc]) {
+  double complex temp;
+  for (int i=0; i<Nc; i++)
+    for (int j=0; j<=i; j++) {
+      temp = A[i][j];
+      A[i][j] = conj(A[j][i]);
+      A[j][i] = conj(temp);
+    }
 }
 
 double complex det_m(double complex A[Nc][Nc]) {
