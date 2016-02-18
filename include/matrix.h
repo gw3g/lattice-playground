@@ -4,11 +4,13 @@
 
 /*-----------------------------------------------------------------------------------------------*/
 
-#define Nc 4
+#define Nc 3
 
 /*-----------------------------------------------------------------------------------------------*/
 
-void view_m(double complex  X[Nc][Nc]);                               // print matrix
+void view_m(double complex A[Nc][Nc]);                               // print matrix
+
+void copy_m(double complex A[Nc][Nc], double complex B[Nc][Nc]);     // copy A->B
 
 void mul_m(double complex A[Nc][Nc],  double complex B[Nc][Nc],       // multiply A*B -> C
                                       double complex C[Nc][Nc]);

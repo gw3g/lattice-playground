@@ -16,11 +16,21 @@ void view_m(double complex  X[Nc][Nc]) {
   }   printf("\n");
 }
 
-void mul_m(double complex A[Nc][Nc],  double complex B[Nc][Nc], 
-                                    double complex C[Nc][Nc]) {
+void copy_m(double complex A[Nc][Nc],  double complex B[Nc][Nc]) {
   for (int i=0; i<Nc; i++) 
     for (int j=0; j<Nc; j++) 
-      for (int k=0; k<Nc; k++) C[i][j] += A[i][k]*B[k][j];
+      B[i][j] = A[i][j];
+}
+
+void mul_m(double complex A[Nc][Nc],  double complex B[Nc][Nc], 
+                                    double complex C[Nc][Nc]) {
+  double complex Ct[Nc][Nc];
+  for (int i=0; i<Nc; i++) 
+    for (int j=0; j<Nc; j++) 
+      for (int k=0; k<Nc; k++) Ct[i][j] += A[i][k]*B[k][j];
+  for (int i=0; i<Nc; i++) 
+    for (int j=0; j<Nc; j++) 
+      C[i][j] = Ct[i][j];
 }
 
 void add_m(double complex A[Nc][Nc],  double complex B[Nc][Nc], 
@@ -98,7 +108,6 @@ void suN_m(double complex A[Nc][Nc]) {
   /*int j, k;*/
   switch (Nc) { 
     // can do Nc=2,3 by hand
-    /*
     case 2: 
       A[1][0] = -conj(A[0][1]);
       A[1][1] = +conj(A[0][0]);
@@ -108,7 +117,6 @@ void suN_m(double complex A[Nc][Nc]) {
       A[2][1] = conj( A[0][2]*A[1][0] - A[1][2]*A[0][0] );
       A[2][2] = conj( A[0][0]*A[1][1] - A[1][0]*A[0][1] );
       break; 
-      */
     default:
       d = det_m(A);
       for (int i=0; i<Nc; i++) A[0][i] *= conj(d);

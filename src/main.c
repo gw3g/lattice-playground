@@ -16,6 +16,7 @@
 double complex link[N][N][N][N][4]        ;   // N**4 array
 int        calls = 1000000                ;   // MC calls
 int        zn    = 2                      ;   // if 0 --> U(1)
+matrix     *ulinks                        ;
 
 /*-----------------------------------------------------------------------------------------------*/
 
@@ -95,10 +96,20 @@ int main() {
   eval_Zn(.0, 2.1, 2);
   eval_Zn(2.1, .0, 2);
   */
+  ulinks = init();
 
-  calls = 10000000;
-  eval_U1(4., .0, 4);
-  eval_U1(0., 4., 4);
+  view_m(ulinks[1].U);
+
+  monte(10.1, ulinks);
+
+  /*int x[4] = {1,2,2,2};*/
+
+  /*update(2.,  ulinks, x, 1);*/
+  view_m(ulinks[1].U);
+
+  /*calls = 10000000;*/
+  /*eval_U1(4., .0, 4);*/
+  /*eval_U1(0., 4., 4);*/
 
   return 0;
 }
