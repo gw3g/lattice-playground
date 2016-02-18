@@ -14,7 +14,7 @@
 /* external parameters */
 
 double complex link[N][N][N][N][4]        ;   // N**4 array
-int        calls = 1000000                ;   // MC calls
+int        calls = 1                      ;   // MC calls
 int        zn    = 2                      ;   // if 0 --> U(1)
 matrix     *ulinks                        ;
 
@@ -105,7 +105,6 @@ int main() {
   /*int x[4] = {1,2,2,2};*/
 
   /*update(2.,  ulinks, x, 1);*/
-  view_m(ulinks[1].U);
 
   /*calls = 10000000;*/
   /*eval_U1(4., .0, 4);*/

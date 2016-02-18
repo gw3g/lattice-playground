@@ -114,9 +114,18 @@ double update(double beta, matrix *lattice, int x[DIM], int mu) {
       move(x, nu,  +1);
 
       ucurr = lattice[ Idx(x,nu) ];
+
+      printf("ucurr = \n");
+      view_m( ucurr.U );
+
       dag_m(ucurr.U);
       add_m( stpl, ucurr.U, stpl);
       dag_m(ucurr.U);
+      printf("ucurr = \n");
+      view_m( ucurr.U );
+
+      printf("stpl = \n");
+      view_m( stpl );
 
       move(x, nu,  +1);
       move(x, mu,  -1);
@@ -132,12 +141,17 @@ double update(double beta, matrix *lattice, int x[DIM], int mu) {
   }
   }
 
+  printf("ptop = \n");
+  view_m( p_t );
+  printf("pbot = \n");
+  view_m( p_b );
+
   sub_m( lattice[ Idx(x,mu) ].U, m.U, stpl ); // treat stpl as temp mat
   mul_m(p_b, stpl, p_b);
   conj_m(stpl);
   mul_m(p_t, stpl, p_t);
   add_m(p_t, p_b, stpl);
-  /*view_m( stpl );*/
+  view_m( stpl );
 
   double dS = -creal( trace( stpl ) ) / 3.;
   /*printf( "%.5f \n", dS );*/
@@ -149,12 +163,13 @@ double update(double beta, matrix *lattice, int x[DIM], int mu) {
 
   if ( ( (float) rand() )/RAND_MAX < prob ) {
     copy_m(m.U, lattice[ Idx(x,mu) ].U );
-    /*view_m(m.U);*/
+    /*view_m(lattice[ Idx(x,mu) ].U);*/
   }
   /*else {*/
     /*action += creal( S*link[ x[0] ][ x[1] ][ x[2] ][ x[3] ][d] );*/
   /*}*/
 
+  printf(" %g   \n", dS );
   /*return action;*/
 
   return dS;
@@ -174,6 +189,7 @@ double monte( double beta, matrix *lattice ) {
     mu   = rand() % DIM;
 
     action += update( beta, lattice, x, mu );
+    /*printf(" %g   \n", action );*/
   }
 
   action /= 2.*( ((double) DIM) - 1. )*((double) calls);
