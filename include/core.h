@@ -26,7 +26,8 @@ double update(double, int *, int, int );
 double sweep( double, int );
 
 double update(double, matrix *, int *, int );
-matrix *init();
+matrix *init_COLD(double *);
+matrix *init_HOT (double *);
 
 double monte(double, matrix *);
 

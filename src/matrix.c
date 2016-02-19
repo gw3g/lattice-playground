@@ -24,7 +24,7 @@ void copy_m(double complex A[Nc][Nc],  double complex B[Nc][Nc]) {
 
 void mul_m(double complex A[Nc][Nc],  double complex B[Nc][Nc], 
                                     double complex C[Nc][Nc]) {
-  double complex Ct[Nc][Nc];
+  double complex Ct[Nc][Nc] = { {.0} };
   for (int i=0; i<Nc; i++) 
     for (int j=0; j<Nc; j++) 
       for (int k=0; k<Nc; k++) Ct[i][j] += A[i][k]*B[k][j];

@@ -17,7 +17,7 @@ inline int sites() {
   return o;
 }
 
-int Idx(int x[DIM], int mu) {
+inline int Idx(int x[DIM], int mu) {
   int offset=0, nsites=1;
   for (int i=0; i<DIM; i++) {
     offset += x[i]*nsites;
@@ -26,7 +26,28 @@ int Idx(int x[DIM], int mu) {
   return offset + mu*nsites;
 }
 
-matrix *init() {
+void shift_x( int x[DIM], int mu, int steps) {
+  /*
+   * mu = 1...4     (direction)
+   */
+  x[mu] = (x[mu]+steps+N)%N;
+  return;
+}
+
+
+/*-----------------------------------------------------------------------------------------------*/
+// various Matrix-struct functions defined here
+
+matrix rmg() {
+  // random matrix generator
+  matrix m;
+  for (int i=0; i<Nc; i++)  for (int j=0; j<Nc; j++)
+      m.U[i][j] = ( rand()/((double) RAND_MAX)-.5 ) + I*( rand()/((double) RAND_MAX)-.5 );
+  suN_m(m.U); // project to SU(Nc)
+  return m;
+}
+
+matrix *init_COLD(double *action) {
   /*int x[DIM];*/
   int nsites = sites();
 
@@ -38,144 +59,129 @@ matrix *init() {
     // fill the lattice with unit matrices
     equ_m(1., L[i].U);
   }
+  *action = 0.0;
   return L;
 }
 
-matrix rnd() {
-  srand(time(NULL));
-  matrix m;
-  for (int i=0; i<Nc; i++)
-    for (int j=0; j<Nc; j++)
-      m.U[i][j] = ( rand()/((double) RAND_MAX)-.5 ) + I*( rand()/((double) RAND_MAX)-.5 );
+matrix *init_HOT(double *action) {
+  /*int x[DIM];*/
+  int nsites = sites();
 
-  suN_m(m.U);
-  return m;
+  int nlinks = DIM*nsites;
+  /*int nplaquettes = DIM*(DIM-1)*nsites/2;*/
+  matrix *L = (matrix *)malloc(nlinks*sizeof(matrix));
+
+  for (int i=0; i<nlinks; i++) {
+    // fill the lattice with unit matrices
+    L[i] = rmg();
+  }
+  *action = 0.0;
+  return L;
 }
 
+/*-----------------------------------------------------------------------------------------------*/
+// MC sampling
 
-void move( int x[], int d, int steps) {
-  /*
-   * d = 1...4     (direction)
-   * x = steps      (can be neg)
-   */
-  x[d] = (  x[d]  +  steps +N ) % N;
+void staple( matrix *lattice, int x[DIM], int mu, int nu,
+                                            matrix *st) {
+      /*
+       *              l5            calculate product of two staples
+       *          5---->---4        adjoining l0 (not including l0).
+       *          |        |        store result in st[2]. Two direc-
+       *       l6 ^        ^ l4     tions mu and nu given... looped
+       *          |   l0   |        over in calc for Wilson action.
+       *          0--->----3
+       *          |        |
+       *       l1 ^        ^ l3     ^ nu
+       *          |   l2   |        |
+       *          1--->----2        --- > mu
+       */
+
+  int l[7]; // list of link indices (e.g. l[1] = globalIdx of l1 )
+  matrix l1, l2, l3, l4, l5, l6;
+
+  // do a "lap"
+                         l[0] = Idx( x, mu );
+  shift_x( x, nu, -1);   l[1] = Idx( x, nu ); copy_m( lattice[l[1]].U, l1.U );
+                         l[2] = Idx( x, mu ); copy_m( lattice[l[2]].U, l2.U );
+  shift_x( x, mu, +1);   l[3] = Idx( x, nu ); copy_m( lattice[l[3]].U, l3.U );
+  shift_x( x, nu, +1);   l[4] = Idx( x, nu ); copy_m( lattice[l[4]].U, l4.U );
+  shift_x( x, nu, +1);
+  shift_x( x, mu, -1);   l[5] = Idx( x, mu ); copy_m( lattice[l[5]].U, l5.U );
+  shift_x( x, nu, -1);   l[6] = Idx( x, nu ); copy_m( lattice[l[6]].U, l6.U );
+
+  // orientation is CLOCKWISE
+  dag_m( l2.U ); dag_m( l3.U ); dag_m( l4.U );
+
+  // st[0] = bottom                       st[1] = top
+     mul_m(    l1.U, l2.U, st[0].U );     mul_m(    l6.U, l5.U, st[1].U );
+     mul_m( st[0].U, l3.U, st[0].U );     mul_m( st[1].U, l4.U, st[1].U );
+
   return;
 }
 
+double plaq(matrix l, matrix *st) {
+  matrix pl[2]; double S_plaq;
+
+  for (int z=0; z<2; z++) {mul_m( l.U, st[z].U, pl[z].U ); dag_m( l.U );}
+
+  add_m( pl[0].U, pl[1].U, pl[0].U );
+  S_plaq = creal( trace( pl[0].U ) )/( (double) Nc );
+
+  return S_plaq;
+}
+
+/*double S_tot(matrix *lattice) {*/
+  /*matrix st[2], temp[2], l;*/
+    /*l = lattice[ Idx(x,mu) ];*/
+  /*for (int z=0; z<2; z++)  equ_m(0,st[z].U);*/
+  /*double neigh = DIM*(DIM-1)/2.;*/
+
+  /*for (int mu=0; mu<DIM; mu++)                            {  l = lattice[ Idx(x,mu) ];*/
+  /*for (int nu=0; nu<DIM; nu++)                            {*/
+    /*if (nu!=mu)                                           {*/
+                    /*staple( lattice, x, mu, nu, temp );   // loop over plaquette*/
+                  /*add_m( temp[0].U, st[0].U, st[0].U );   // contributions to*/
+                  /*add_m( temp[1].U, st[1].U, st[1].U );   // action ...*/
+                               /*S_l = plaq(l, st)/neigh;   // printf(" S_l = %g \n", S_l);*/
+                                                          /*}*/
+    /*[> p_{bot/top} <]                                     }*/
+                                                          /*}*/
+
+
+/*}*/
+
 double update(double beta, matrix *lattice, int x[DIM], int mu) {
-  matrix m = rnd();
+  matrix m = rmg(); matrix l = lattice[ Idx(x,mu) ];
+  matrix st[2], temp[2];
+  for (int z=0; z<2; z++)  equ_m(0,st[z].U);
 
-  double complex stpl[Nc][Nc];
-  double complex p_t[Nc][Nc];
-  double complex p_b[Nc][Nc];
-  equ_m(0., p_t);
-  equ_m(0., p_b);
+  double S_m, S_l;
 
-  matrix ucurr;
+  for (int nu=0; nu<DIM; nu++)                            {
+    if (nu!=mu)                                           {
+                    staple( lattice, x, mu, nu, temp );   // loop over plaquette
+                  add_m( temp[0].U, st[0].U, st[0].U );   // contributions to
+                  add_m( temp[1].U, st[1].U, st[1].U );   // action ...
+                                                          }
+    /* p_{bot/top} */                                     }
 
-  for (int nu=0; nu<DIM; nu++) {
-    if (nu!=mu)                {
-      /*
-       *    x---->---x
-       *    |        |
-       *    ^        v
-       *    |  <     |
-       *    0---?----x
-       *    |    >   |
-       *    ^        v      ^ nu
-       *    |        |      |
-       *    x---<----x       --- > mu
-       *
-       */
+  /*double neigh = (DIM-1);*/
+  S_m = 1. - plaq(m, st);                           // printf(" S_m = %g \n", S_m);
+  S_l = 1. - plaq(l, st);                           // printf(" S_l = %g \n", S_l);
 
-      // bottom staple:
-      equ_m(0., stpl);
-      move(x, nu,  -1);
-
-      ucurr = lattice[ Idx(x,nu) ];
-      add_m( stpl, ucurr.U, stpl);
-
-      ucurr = lattice[ Idx(x,mu) ];
-      dag_m(ucurr.U);
-
-      mul_m( stpl, ucurr.U, stpl);
-      dag_m(ucurr.U);
-
-      move(x, mu, +1);
-      ucurr = lattice[ Idx(x,nu) ];
-      dag_m(ucurr.U);
-      mul_m( stpl, ucurr.U, stpl);
-      dag_m(ucurr.U);
-
-      add_m( stpl, p_b, p_b );
-
-      // top staple:
-      equ_m(0., stpl);
-      move(x, nu,  +1);
-
-      ucurr = lattice[ Idx(x,nu) ];
-
-      printf("ucurr = \n");
-      view_m( ucurr.U );
-
-      dag_m(ucurr.U);
-      add_m( stpl, ucurr.U, stpl);
-      dag_m(ucurr.U);
-      printf("ucurr = \n");
-      view_m( ucurr.U );
-
-      printf("stpl = \n");
-      view_m( stpl );
-
-      move(x, nu,  +1);
-      move(x, mu,  -1);
-      ucurr = lattice[ Idx(x,mu) ];
-      mul_m( stpl, ucurr.U, stpl);
-
-      move(x, nu, -1);
-      ucurr = lattice[ Idx(x,nu) ];
-      mul_m( stpl, ucurr.U, stpl);
-
-      add_m( stpl, p_t, p_t );
-
-  }
-  }
-
-  printf("ptop = \n");
-  view_m( p_t );
-  printf("pbot = \n");
-  view_m( p_b );
-
-  sub_m( lattice[ Idx(x,mu) ].U, m.U, stpl ); // treat stpl as temp mat
-  mul_m(p_b, stpl, p_b);
-  conj_m(stpl);
-  mul_m(p_t, stpl, p_t);
-  add_m(p_t, p_b, stpl);
-  view_m( stpl );
-
-  double dS = -creal( trace( stpl ) ) / 3.;
-  /*printf( "%.5f \n", dS );*/
+  double dS = S_l-S_m;
+  /*printf( "dS = %.5f \n", S_m );*/
 
   // Boltzmann factor
   double prob = exp( - beta*dS );
-  /*printf( "%.5f \n", prob );*/
-  /*prob = prob/( prob + (1./prob) );*/
 
-  if ( ( (float) rand() )/RAND_MAX < prob ) {
-    copy_m(m.U, lattice[ Idx(x,mu) ].U );
-    /*view_m(lattice[ Idx(x,mu) ].U);*/
-  }
-  /*else {*/
-    /*action += creal( S*link[ x[0] ][ x[1] ][ x[2] ][ x[3] ][d] );*/
-  /*}*/
-
-  printf(" %g   \n", dS );
-  /*return action;*/
-
+  if ( ( (float) rand() )/RAND_MAX < prob ) { copy_m(m.U, lattice[ Idx(x,mu) ].U ); dS=S_m;}
+  else                                      { dS=S_l; }
   return dS;
 }
 
-double monte( double beta, matrix *lattice ) {
+double monte( double beta, matrix *lattice) {
 
   int       x[4], mu;
   double action = 0.0;
@@ -193,9 +199,7 @@ double monte( double beta, matrix *lattice ) {
   }
 
   action /= 2.*( ((double) DIM) - 1. )*((double) calls);
-  printf(" %g   \n", action );
+  /*printf(" %g   \n", *action );*/
   return 1. - action;
-
 }
-
 
