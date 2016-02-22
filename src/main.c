@@ -13,102 +13,15 @@
 
 /* external parameters */
 
-double complex link[N][N][N][N][4]        ;   // N**4 array
-int        calls = 100000                 ;   // MC calls
+double complex link[NX][NX][NX][NX][4]        ;   // NX**4 array
+int        calls = 5                      ;   // MC calls
 int        zn    = 2                      ;   // if 0 --> U(1)
 matrix     *ulinks                        ;
 
-/*-----------------------------------------------------------------------------------------------*/
 
-/*double db = .05;*/
-int Nbeta = 100;
-FILE *file; char fname[40];
-
-void eval_Zn( double Bi, double Bf, int dim) {
-  ic(1);
-
-  double beta=Bi, S, db=(Bf-Bi)/( (double) Nbeta );
-
-  if (Bi<Bf) {                                                      // COOLING
-    sprintf(fname, "out/data/Z%d_cool_(d=%d, N=%d).csv", zn, dim, N);
-  }
-  else if (Bi>Bf) {                                                 // HEATING
-    sprintf(fname, "out/data/Z%d_heat_(d=%d, N=%d).csv", zn, dim, N);
-  }
-
-  file = fopen(fname, "w+");
-
-  fprintf(file,   "# d=%d lattice, w/ group action Z_%d \n", dim, zn                      );
-  printf(         "# d=%d lattice, w/ group action Z_%d \n", dim, zn                      );
-  fprintf(file,   "# MC calls %d\n", calls                                                );
-  fprintf(file,   "#\n"                                                                   );
-  fprintf(file,   "# beta,    action  \n"                                                 );
-
-  for (int i=0; i<Nbeta; beta+=db, i++) 
-      {   S = sweep(beta, dim);
-          fprintf(file, "%.8f, %.8f\n", beta, S );
-          printf(       "%.8f, %.8f\n", beta, S );    }
- 
-  fclose(file);                                                                             return;
-}
-
-void eval_U1( double Bi, double Bf, int dim) {
-  zn=0;ic(1);
-
-  double beta=Bi, S, db=(Bf-Bi)/( (double) Nbeta );
-
-  if (Bi<Bf) {                                                      // COOLING
-    sprintf(fname, "out/data/U(1)_cool_(d=%d, N=%d).csv", dim, N);
-  }
-  else if (Bi>Bf) {                                                 // HEATING
-    sprintf(fname, "out/data/U(1)_heat_(d=%d, N=%d).csv", dim, N);
-  }
-
-  file = fopen(fname, "w+");
-
-  fprintf(file,   "# d=%d lattice, w/ group action U(1) \n", dim                          );
-  printf(         "# d=%d lattice, w/ group action U(1) \n", dim                          );
-  fprintf(file,   "# MC calls %d\n", calls                                                );
-  fprintf(file,   "#\n"                                                                   );
-  fprintf(file,   "# beta,    action  \n"                                                 );
-
-  for (int i=0; i<Nbeta; beta+=db, i++) 
-      {   S = sweep(beta, dim);
-          fprintf(file, "%.8f, %.8f\n", beta, S );
-          printf(       "%.8f, %.8f\n", beta, S );    }
- 
-  fclose(file);                                                                             return;
-}
-
-void eval_SUn( double Bi, double Bf, int dim) {
-  zn=0;ic(1);
-
-  double beta=Bi, S, db=(Bf-Bi)/( (double) Nbeta );
-  double action;
-  ulinks = init_COLD( &action );
-
-  if (Bi<Bf) {                                                      // COOLING
-    sprintf(fname, "out/data/SU(%d)_cool_(d=%d, N=%d).csv", Nc, dim, N);
-  }
-  else if (Bi>Bf) {                                                 // HEATING
-    sprintf(fname, "out/data/SU(%d)_heat_(d=%d, N=%d).csv", Nc, dim, N);
-  }
-
-  file = fopen(fname, "w+");
-
-  fprintf(file,   "# d=%d lattice, w/ group action SU(%d) \n", dim, Nc                    );
-  printf(         "# d=%d lattice, w/ group action U(1) \n", dim                          );
-  fprintf(file,   "# MC calls %d\n", calls                                                );
-  fprintf(file,   "#\n"                                                                   );
-  fprintf(file,   "# beta,    action  \n"                                                 );
-
-  for (int i=0; i<Nbeta; beta+=db, i++) 
-      {   S = monte(beta, ulinks);
-          fprintf(file, "%.8f, %.8f\n", beta, S );
-          printf(       "%.8f, %.8f\n", beta, S );    }
- 
-  fclose(file); free(ulinks);                                                               return;
-}
+void eval_Zn  ( double Bi, double Bf, int dim);
+void eval_U1  ( double Bi, double Bf, int dim);
+void eval_SUn ( double Bi, double Bf);
 
 /*-----------------------------------------------------------------------------------------------*/
 
@@ -133,7 +46,8 @@ int main() {
 
   /*view_m(ulinks[1].U);*/
 
-  eval_SUn(5., .01, 4);
+  /*eval_SUn(10., .01);*/
+  eval_SUn(.01, 10.);
 /*
   double b =5, db=.2, s;
   for (int i=0; i<30; b+=db, i++) {
@@ -152,4 +66,111 @@ int main() {
   return 0;
 }
 
+/*-----------------------------------------------------------------------------------------------*/
 
+/*double db = .05;*/
+void therm( double, double ); // --- for thermometer bar
+int Nbeta = 100;
+FILE *file; char fname[40];
+
+void eval_Zn( double Bi, double Bf, int dim) {
+  ic(1);
+
+  double beta=Bi, S, db=(Bf-Bi)/( (double) Nbeta );
+
+  if (Bi<Bf) {                                                      // COOLING
+    sprintf(fname, "out/data/Z%d_cool_(d=%d, N=%d).csv", zn, dim, NX);
+  }
+  else if (Bi>Bf) {                                                 // HEATING
+    sprintf(fname, "out/data/Z%d_heat_(d=%d, N=%d).csv", zn, dim, NX);
+  }
+
+  file = fopen(fname, "w+");
+
+  fprintf(file,   "# d=%d lattice, w/ group action Z_%d \n", dim, zn                      );
+  printf(         "# d=%d lattice, w/ group action Z_%d \n", dim, zn                      );
+  fprintf(file,   "# MC calls %d\n", calls                                                );
+  fprintf(file,   "#\n"                                                                   );
+  fprintf(file,   "# beta,    action  \n"                                                 );
+
+  for (int i=0; i<Nbeta; beta+=db, i++) 
+      {   S = sweep(beta, dim);
+          fprintf(file, "%.8f, %.8f\n", beta, S );
+          printf(       "%.8f, %.8f\n", beta, S );    }
+ 
+  fclose(file);                                                                             return;
+}
+
+void eval_U1( double Bi, double Bf, int dim) {
+  zn=0;ic(1);
+
+  double beta=Bi, S, db=(Bf-Bi)/( (double) Nbeta );
+
+  if (Bi<Bf) {                                                      // COOLING
+    sprintf(fname, "out/data/U(1)_cool_(d=%d, NX=%d).csv", dim, NX);
+  }
+  else if (Bi>Bf) {                                                 // HEATING
+    sprintf(fname, "out/data/U(1)_heat_(d=%d, NX=%d).csv", dim, NX);
+  }
+
+  file = fopen(fname, "w+");
+
+  fprintf(file,   "# d=%d lattice, w/ group action U(1) \n", dim                          );
+  printf(         "# d=%d lattice, w/ group action U(1) \n", dim                          );
+  fprintf(file,   "# MC calls %d\n", calls                                                );
+  fprintf(file,   "#\n"                                                                   );
+  fprintf(file,   "# beta,    action  \n"                                                 );
+
+  for (int i=0; i<Nbeta; beta+=db, i++) 
+      {   S = sweep(beta, dim);
+          fprintf(file, "%.8f, %.8f\n", beta, S );
+          printf(       "%.8f, %.8f\n", beta, S );    }
+ 
+  fclose(file);                                                                             return;
+}
+
+void eval_SUn( double Bi, double Bf) {
+
+  double beta=Bi, S, db=(Bf-Bi)/( (double) Nbeta );
+  printf("\n d = %d lattice (NX=%d) w/ SU(%d) gauge group \n", DIM, NX, Nc);
+
+  if (Bi<Bf) {                                                      // COOLING
+    sprintf(fname, "out/data/SU(%d)_cool_(d=%d, NX=%d).csv", Nc, DIM, NX);
+    ulinks = init_HOT( ); printf("\n :: COOLING :: \n");
+  }
+  else if (Bi>Bf) {                                                 // HEATING
+    sprintf(fname, "out/data/SU(%d)_heat_(d=%d, NX=%d).csv", Nc, DIM, NX);
+    ulinks = init_COLD( ); printf("\n :: HEATING :: \n ");
+  }
+
+  file = fopen(fname, "w+");
+
+  fprintf(file,   "# d=%d lattice, w/ group action SU(%d) \n",   DIM, Nc                  );
+  fprintf(file,   "# MC calls %d\n", calls                                                );
+  fprintf(file,   "#\n"                                                                   );
+  fprintf(file,   "# beta,    action  \n"                                                 );
+
+  for (int i=0; i<Nbeta; beta+=db, i++) 
+      {   S = sweep(beta, ulinks);
+          fprintf(file, "%.8f, %.8f\n", beta, S );
+          therm(S, beta ); 
+          /*printf(       "%.8f, %.8f\n", beta, S );    */
+      }; printf("\n");
+ 
+  fclose(file); free(ulinks);                                                               return;
+}
+
+/*-----------------------------------------------------------------------------------------------*/
+
+void therm( double e, double b ) {
+  int width = 60;
+  printf(" beta = %.1f : [", b);
+  for (int i=0; i<width;++i) {
+    int pos = e*width / 1.2;
+         if (i<pos)  printf("-");
+    else if (i==pos) printf("O");
+    else             printf(" ");
+  }
+  printf("]  %.4f\r", e);
+  fflush(stdout);
+}

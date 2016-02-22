@@ -2,9 +2,13 @@
  * Author: greg jackson
  * Date: Feb 08 2016
  * Functions for complex Nc*Nc matrices. Intended for SU(Nc) calculations.
+ * 
+ * TODO: exponentiation & Pauli ... Gellman ... etc basis
  */
 
 #include "../include/matrix.h"
+
+/*-----------------------------------------------------------------------------------------------*/
 
 void view_m(double complex  X[Nc][Nc]) {
   double complex tmp;
@@ -123,3 +127,4 @@ void suN_m(double complex A[Nc][Nc]) {
   }
 }
 
+/*-----------------------------------------------------------------------------------------------*/
