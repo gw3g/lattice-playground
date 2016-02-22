@@ -13,7 +13,7 @@
 matrix rmg() {    // --- random matrix generator
   matrix m;
   for (int i=0; i<Nc; i++)  for (int j=0; j<Nc; j++)
-      m.U[i][j] = 1.+( rand()/((double) RAND_MAX)-.5 )+I*( rand()/((double) RAND_MAX)-.5 );
+      m.U[i][j] = ( rand()/((double) RAND_MAX)-.5 )+I*( rand()/((double) RAND_MAX)-.5 );
 
   suN_m(m.U);     // --- project onto SU(Nc)
   return m;
@@ -127,12 +127,11 @@ double update(double beta, matrix *lattice, int x[DIM], int mu) {
   /*printf( "dS = %.5f \n", S_m );*/
 
   // Boltzmann factor
-  double prob = exp( -beta*S_m );
-  prob = prob/(prob+1./prob);
+  double prob = exp( -beta*dS );
+  /*prob = prob/(prob+1./prob);*/
 
-  /*if ( ( (float) rand() )/RAND_MAX < prob ) { copy_m(m.U, lattice[ Idx(x,mu) ].U ); dS=S_m;}*/
-  /*else                                      { dS=S_l; }*/
-  dS = S_l;
+  if ( ( (float) rand() )/RAND_MAX < prob ) { copy_m(m.U, lattice[ Idx(x,mu) ].U ); dS=S_m;}
+  else                                      { dS=S_l; }
   return dS;
 }
 

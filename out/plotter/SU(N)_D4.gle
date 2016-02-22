@@ -1,4 +1,4 @@
-size 11 9
+size 15 9
 set lwidth 0.06
 set cap round
 !set font psncsi
@@ -7,7 +7,7 @@ set hei 0.6
 amove 2 1.5
 set texlabels 1
 begin graph
-  size 7 7 fullsize
+  size 11 7 fullsize
 
   xlabels font psncsr hei 0.5
   xticks length 0.25
@@ -22,14 +22,14 @@ begin graph
   let d4 = 0               from 0 to 4
   let d3 = 3./(4.*x)        from 5 to 10
   let d2 = 1.-(x/(4.))        from 0 to 5
-  data "../data/SU(2)_heat_(d=4, NX=8).csv" comment # d11 = c1, c2
-  data "../data/SU(2)_cool_(d=4, NX=8).csv" comment # d12 = c1, c2
+  data "../data/SU(2)_heat_(d=4, NX=4).csv" comment # d11 = c1, c2
+  data "../data/SU(2)_cool_(d=4, NX=4).csv" comment # d12 = c1, c2
 
   d4 line             color 0.8 lstyle 1 lwidth 0.05
   d3 line             color 0.8 lstyle 2 lwidth 0.05
   d2 line             color 0.8 lstyle 1 lwidth 0.05
-  d11 line smooth color orange    lstyle 1 lwidth 0.1
-  d12 line smooth color royalblue lstyle 4 lwidth 0.1
+  d11 line  color orange    lstyle 1 lwidth 0.1
+  d12 line  color royalblue lstyle 4 lwidth 0.1
 end graph
 
 set hei 0.4
@@ -45,7 +45,7 @@ end key
 
 set hei 0.4
 
-amove 7.5 4.4
+amove 3.5 6
 box 2.9 1.6 fill lavender round .1 nostroke
 rmove -0.07 0.1
 box 2.9 1.6 fill aliceblue round .1 nostroke

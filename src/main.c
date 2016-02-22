@@ -14,7 +14,7 @@
 /* external parameters */
 
 double complex link[NX][NX][NX][NX][4]        ;   // NX**4 array
-int        calls = 5                      ;   // MC calls
+int        calls = 500                    ;   // MC calls
 int        zn    = 2                      ;   // if 0 --> U(1)
 matrix     *ulinks                        ;
 
@@ -46,7 +46,7 @@ int main() {
 
   /*view_m(ulinks[1].U);*/
 
-  /*eval_SUn(10., .01);*/
+  eval_SUn(10., .01);
   eval_SUn(.01, 10.);
 /*
   double b =5, db=.2, s;
@@ -70,7 +70,7 @@ int main() {
 
 /*double db = .05;*/
 void therm( double, double ); // --- for thermometer bar
-int Nbeta = 100;
+int Nbeta = 20;
 FILE *file; char fname[40];
 
 void eval_Zn( double Bi, double Bf, int dim) {
