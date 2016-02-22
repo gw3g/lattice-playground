@@ -8,7 +8,6 @@
 
 # Libraries
 *.lib
-*.gle
 
 # Data
 *.out
@@ -24,4 +23,5 @@
 
 # Subdirectories
 build
+.gle/
 bin/*

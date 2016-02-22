@@ -2,15 +2,11 @@
  * Author: greg jackson
  * Date: Dec 03 2015
  * Z_N gauge theory on a d<=4 lattice
+ * lim_{N->inf} is included, U(1)
  *
  */
+
 #include "../include/core.h"
-
-/*-----------------------------------------------------------------------------------------------*/
-
-/*double complex *link                      ;*/
-/*int            calls                      ;*/
-/*int            zn                         ;*/
 
 /*-----------------------------------------------------------------------------------------------*/
 
@@ -23,10 +19,10 @@ void ic(int h) {
    * general link elements are
    */
   int x[4];
-  for (x[0]=0; x[0]<N; x[0]++)  {
-  for (x[1]=0; x[1]<N; x[1]++)    {
-  for (x[2]=0; x[2]<N; x[2]++)      {
-  for (x[3]=0; x[3]<N; x[3]++)        {
+  for (x[0]=0; x[0]<NX; x[0]++)  {
+  for (x[1]=0; x[1]<NX; x[1]++)    {
+  for (x[2]=0; x[2]<NX; x[2]++)      {
+  for (x[3]=0; x[3]<NX; x[3]++)        {
 
     for (int d=0; d<4; d++) {
 
@@ -47,7 +43,7 @@ void shift( int x[], int d, int steps) {
    * d = 1...4     (direction)
    * x = steps      (can be neg)
    */
-  x[d] = (  x[d]  +  steps +N ) % N;
+  x[d] = (  x[d]  +  steps +NX ) % NX;
   return;
 }
 
@@ -115,10 +111,10 @@ double sweep( double beta, int dim ) {
 
   for (int run=0; run<calls; run++)  {
 
-    x[0] = rand() % N;
-    x[1] = rand() % N;
-    x[2] = rand() % N;
-    x[3] = rand() % N;
+    x[0] = rand() % NX;
+    x[1] = rand() % NX;
+    x[2] = rand() % NX;
+    x[3] = rand() % NX;
     d    = rand() % dim;
 
     action += update( beta, x, d, dim );
