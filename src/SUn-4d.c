@@ -14,7 +14,7 @@ matrix rmg() {    // --- random matrix generator
   matrix m;
   for (int i=0; i<Nc; i++) {
     for (int j=0; j<Nc; j++) {
-      m.U[i][j] = 2.*( rand()/((double) RAND_MAX)-.5 )+5.*I*( rand()/((double) RAND_MAX)-.5 );
+      m.U[i][j] = 3.*( rand()/((double) RAND_MAX)-.5 )+3.*I*( rand()/((double) RAND_MAX)-.5 );
     }
     m.U[i][i] += 1.;
   }

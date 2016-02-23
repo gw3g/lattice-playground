@@ -14,7 +14,7 @@
 /* external parameters */
 
 double complex link[NX][NX][NX][NX][4]        ;   // NX**4 array
-int        calls = 50                     ;   // MC calls
+int        calls = 10000                   ;   // MC calls
 int        zn    = 2                      ;   // if 0 --> U(1)
 matrix     *ulinks                        ;
 

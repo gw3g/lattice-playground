@@ -7,7 +7,7 @@
 
 /*-----------------------------------------------------------------------------------------------*/
 
-#define NX 8
+#define NX 4
 #define DIM 4
 
 typedef struct matrix { double complex U[Nc][Nc]; } matrix;
