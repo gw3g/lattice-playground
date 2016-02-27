@@ -16,7 +16,7 @@
 double complex link[NX][NX][NX][NX][4]        ;   // NX**4 array
 int        calls = 10000                   ;   // MC calls
 int        zn    = 2                      ;   // if 0 --> U(1)
-matrix     *ulinks                        ;
+Group     *ulinks                        ;
 
 
 void eval_Zn  ( double Bi, double Bf, int dim);
