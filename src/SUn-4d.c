@@ -41,6 +41,13 @@ Group *init_HOT() {
 
 /*-----------------------------------------------------------------------------------------------*/
 
+void    staple( Group *lattice, int x[DIM], int mu, int nu, Group *st );
+double  plaq( Group l, Group *st );
+double  update( double beta, Group *lattice, int x[DIM], int mu );
+double  sweep( double beta, Group *lattice );
+
+/*-----------------------------------------------------------------------------------------------*/
+
 void staple( Group *lattice, int x[DIM], int mu, int nu, // out:
                                                           Group *st) {
       /*
@@ -113,7 +120,7 @@ double plaq(Group l, Group *st) {
 
 double update(double beta, Group *lattice, int x[DIM], int mu) {
   Group  m   = rmg(),                  // new link variable
-          l   = lattice[ Idx(x,mu) ];   // current -- " --
+         l   = lattice[ Idx(x,mu) ];   // current -- " --
   Group st[2];
   for (int z=0; z<2; z++)  equ_m(.0,st[z].U);
 
