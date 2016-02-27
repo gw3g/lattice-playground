@@ -10,8 +10,8 @@
 /*-----------------------------------------------------------------------------------------------*/
 // various Matrix-struct functions defined here
 
-matrix rmg() {    // --- random matrix generator
-  matrix m;
+Group rmg() {    // --- random matrix generator
+  Group m;
   for (int i=0; i<Nc; i++) {
     for (int j=0; j<Nc; j++) {
       m.U[i][j] = 3.*( rand()/((double) RAND_MAX)-.5 )+3.*I*( rand()/((double) RAND_MAX)-.5 );
@@ -23,17 +23,17 @@ matrix rmg() {    // --- random matrix generator
   return m;
 }
 
-matrix *init_COLD() {
+Group *init_COLD() {
   int nlinks = DIM*sites();
-  matrix *L = (matrix *)malloc(nlinks*sizeof(matrix));
+  Group *L = (Group *)malloc(nlinks*sizeof(Group));
   // --- populate with unit matrices
   for (int i=0; i<nlinks; i++)  equ_m(1., L[i].U);
   return L;
 }
 
-matrix *init_HOT() {
+Group *init_HOT() {
   int nlinks = DIM*sites();
-  matrix *L = (matrix *)malloc(nlinks*sizeof(matrix));
+  Group *L = (Group *)malloc(nlinks*sizeof(Group));
   // --- populate with unit matrices
   for (int i=0; i<nlinks; i++)  L[i] = rmg();
   return L;
@@ -41,8 +41,8 @@ matrix *init_HOT() {
 
 /*-----------------------------------------------------------------------------------------------*/
 
-void staple( matrix *lattice, int x[DIM], int mu, int nu, // out:
-                                                          matrix *st) {
+void staple( Group *lattice, int x[DIM], int mu, int nu, // out:
+                                                          Group *st) {
       /*
        *              l5            calculate product of two staples
        *          5---->---4        adjoining l0 (not including l0).
@@ -57,7 +57,7 @@ void staple( matrix *lattice, int x[DIM], int mu, int nu, // out:
        */
 
   int l[7]; // list of link indices (e.g. l[1] = globalIdx of l1 )
-  matrix l1, l2, l3, l4, l5, l6;
+  Group l1, l2, l3, l4, l5, l6;
 
   // do a "lap"
                          l[0] = Idx( x, mu );
@@ -79,8 +79,8 @@ void staple( matrix *lattice, int x[DIM], int mu, int nu, // out:
   return;
 }
 
-double plaq(matrix l, matrix *st) {
-  matrix pl[2]; double S_plaq;
+double plaq(Group l, Group *st) {
+  Group pl[2]; double S_plaq;
 
   // --- combine top & bottom staples
   for (int z=0; z<2; z++) {mul_m( l.U, st[z].U, pl[z].U ); dag_m( l.U );}
@@ -91,8 +91,8 @@ double plaq(matrix l, matrix *st) {
   return S_plaq;
 }
 
-/*double S_tot(matrix *lattice) {*/
-  /*matrix st[2], temp[2], l;*/
+/*double S_tot(Group *lattice) {*/
+  /*Group st[2], temp[2], l;*/
     /*l = lattice[ Idx(x,mu) ];*/
   /*for (int z=0; z<2; z++)  equ_m(0,st[z].U);*/
   /*double neigh = DIM*(DIM-1)/2.;*/
@@ -111,10 +111,10 @@ double plaq(matrix l, matrix *st) {
 
 /*}*/
 
-double update(double beta, matrix *lattice, int x[DIM], int mu) {
-  matrix  m   = rmg(),                  // new link variable
+double update(double beta, Group *lattice, int x[DIM], int mu) {
+  Group  m   = rmg(),                  // new link variable
           l   = lattice[ Idx(x,mu) ];   // current -- " --
-  matrix st[2];
+  Group st[2];
   for (int z=0; z<2; z++)  equ_m(.0,st[z].U);
 
   double S_m = .0, S_l = .0;
@@ -139,7 +139,7 @@ double update(double beta, matrix *lattice, int x[DIM], int mu) {
   return dS;
 }
 
-double sweep( double beta, matrix *lattice) {
+double sweep( double beta, Group *lattice) {
 
   int       x[DIM], mu, nsites=sites(), nlinks = DIM*nsites;
   double action = 0.0;

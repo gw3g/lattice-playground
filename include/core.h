@@ -10,12 +10,12 @@
 #define NX 4
 #define DIM 4
 
-typedef struct matrix { double complex U[Nc][Nc]; } matrix;
+typedef struct Group { double complex U[Nc][Nc]; } Group;
 
 /*-----------------------------------------------------------------------------------------------*/
 
 extern double complex link[NX][NX][NX][NX][4]        ;   // N**4 array
-extern matrix         *ulinks                    ;
+extern Group         *ulinks                    ;
 extern int            calls                      ;   // MC calls
 extern int            zn                         ;   // if 0 --> U(1)
 
@@ -62,9 +62,9 @@ void ic(int);
 double update(double, int *, int, int );
 double sweep( double, int );
 
-double update(double, matrix *, int *, int );
-matrix *init_COLD();
-matrix *init_HOT ();
+double update(double, Group *, int *, int );
+Group *init_COLD();
+Group *init_HOT ();
 
-double sweep(double, matrix *);
+double sweep(double, Group *);
 
