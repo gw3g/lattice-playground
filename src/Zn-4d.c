@@ -43,10 +43,10 @@ double update_Zn(double beta, Group *lattice, int x[DIM], int mu ) {
                            l[2] = Idx( x, mu ); Spl *=  conj(lattice[l[2]].U[0][0]);
     shift_x( x, mu, +1);   l[3] = Idx( x, nu ); Spl *=  conj(lattice[l[3]].U[0][0]);
     S   += Spl;
-    shift_x( x, nu, +1);   l[4] = Idx( x, nu ); Spl  =  conj(lattice[l[4]].U[0][0]);
+    shift_x( x, nu, +1);   l[4] = Idx( x, nu ); Spl  =  (lattice[l[4]].U[0][0]);
     shift_x( x, nu, +1);
-    shift_x( x, mu, -1);   l[5] = Idx( x, mu ); Spl *=  lattice[l[5]].U[0][0];
-    shift_x( x, nu, -1);   l[6] = Idx( x, nu ); Spl *=  lattice[l[6]].U[0][0];
+    shift_x( x, mu, -1);   l[5] = Idx( x, mu ); Spl *=  conj(lattice[l[5]].U[0][0]);
+    shift_x( x, nu, -1);   l[6] = Idx( x, nu ); Spl *=  conj(lattice[l[6]].U[0][0]);
     S   += Spl;
   }
   } 
@@ -60,6 +60,7 @@ double update_Zn(double beta, Group *lattice, int x[DIM], int mu ) {
 
 
   double dS = -creal( S*(uij - lattice[l[0]].U[0][0] ) );
+  /*double dS = 6.- creal( S*(uij) );*/
   action = 0.;
 
   // Boltzmann factor

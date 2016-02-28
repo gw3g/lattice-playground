@@ -13,9 +13,9 @@
 
 /* external parameters */
 
-int        calls = 1000                    ;   // MC calls
-int        zn    = 2                      ;   // if 0 --> U(1)
-Group     *ulinks                        ;
+int        calls = 100                     ;   // MC calls
+int        zn    = 6                       ;   // if 0 --> U(1)
+Group     *ulinks                          ;   // the lattice
 
 
 void eval_Zn  ( double Bi, double Bf);
@@ -28,8 +28,8 @@ int main() {
 
   srand(time(NULL))    ;
 
-  //eval_Zn(.0, 1.);
-  //eval_Zn(1., .0);
+  //eval_Zn(.0, 2.);
+  //eval_Zn(2., .0);
   
   eval_U1(.0, 4.);
   eval_U1(4., .0);
