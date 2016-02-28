@@ -7,7 +7,7 @@
 
 /*-----------------------------------------------------------------------------------------------*/
 
-#define NX 4
+#define NX 10
 #define DIM 4
 
 typedef struct Group { double complex U[Nc][Nc]; } Group;
@@ -58,9 +58,9 @@ inline void shift_x( int x[DIM], int mu, int steps) {
 
 /*-----------------------------------------------------------------------------------------------*/
 
-void ic(int);
-double update(double, int *, int, int );
-double sweep( double, int );
+Group *init(int);
+double update_Zn(double, Group *, int *, int );
+double sweep_Zn( double, Group * );
 
 double update(double, Group *, int *, int );
 Group *init_COLD();

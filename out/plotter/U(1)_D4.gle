@@ -21,8 +21,8 @@ begin graph
 
   let d4 = 0               from 0 to 4
   let d3 = 1/(4.*x)        from 1.5 to 4
-  data "../data/U(1)_heat_(d=4, N=10).csv" comment # d11 = c1, c2
-  data "../data/U(1)_cool_(d=4, N=10).csv" comment # d12 = c1, c2
+  data "../data/U(1)_heat_(d=4, NX=10).csv" comment # d11 = c1, c2
+  data "../data/U(1)_cool_(d=4, NX=10).csv" comment # d12 = c1, c2
 
   d4 line             color 0.8 lstyle 1 lwidth 0.05
   d3 line             color 0.8 lstyle 1 lwidth 0.05
