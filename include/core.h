@@ -8,13 +8,12 @@
 /*-----------------------------------------------------------------------------------------------*/
 
 #define NX 16
-#define DIM 2
+#define DIM 4
 
 typedef struct Group { double complex U[Nc][Nc]; } Group;
 
 /*-----------------------------------------------------------------------------------------------*/
 
-extern double complex link[NX][NX][NX][NX][4]        ;   // N**4 array
 extern Group         *ulinks                    ;
 extern int            calls                      ;   // MC calls
 extern int            zn                         ;   // if 0 --> U(1)

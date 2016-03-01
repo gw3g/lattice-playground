@@ -26,8 +26,7 @@ begin graph
 
   let d4 = 0               from 0 to 1.5
   !let d3 = 1/(4.*x)        from 0 to 3.5
-  data "../data/Z2_heat_(d=4, NX=4).csv" comment # d11 = c1, c2
-  data "../data/Z2_cool_(d=4, NX=4).csv" comment # d12 = c1, c2
+  data "../data/SU(3)_beta=1.00_(d=4, NX=6).csv" comment # d11 = c1, c2
 
   data "../data/Z2_heat_(d=4, NX=8).csv" comment # d21 = c1, c2
   data "../data/Z2_cool_(d=4, NX=8).csv" comment # d22 = c1, c2
