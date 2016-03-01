@@ -22,7 +22,7 @@ $(ODIR)/%.o: $(SDIR)/%.$(SRCEXT)
 	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
-	@echo "Cleaning : $(RM) -r $(ODIR) $(TARGET)"; $(RM) -r $(ODIR) $(TARGET); $(RM) -r $(OUT)/data; $(RM) bin/*;
+	@echo "Cleaning : $(RM) -r $(ODIR) $(TARGET)"; $(RM) -r $(ODIR) $(TARGET); $(RM) bin/*;
 
 # auxiliary compiles go here:
 

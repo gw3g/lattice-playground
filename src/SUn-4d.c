@@ -77,7 +77,8 @@ void staple( Group *lattice, int x[DIM], int mu, int nu, // out:
   shift_x( x, nu, -1);   l[6] = Idx( x, nu ); copy_m( lattice[l[6]].U, l6.U );
 
   // --- orientation is CLOCKWISE
-  dag_m( l2.U ); dag_m( l3.U ); dag_m( l4.U );
+  /*dag_m( l2.U ); dag_m( l3.U ); dag_m( l4.U );*/
+  dag_m( l2.U ); dag_m( l3.U ); dag_m( l5.U ); dag_m( l6.U );
 
   // st[0] = bottom                       st[1] = top
      mul_m(    l1.U, l2.U, st[0].U );     mul_m(    l6.U, l5.U, st[1].U );
@@ -90,7 +91,8 @@ double plaq(Group l, Group *st) {
   Group pl[2]; double S_plaq;
 
   // --- combine top & bottom staples
-  for (int z=0; z<2; z++) {mul_m( l.U, st[z].U, pl[z].U ); dag_m( l.U );}
+  /*for (int z=0; z<2; z++) {mul_m( l.U, st[z].U, pl[z].U ); dag_m( l.U );}*/
+  for (int z=0; z<2; z++) {mul_m( l.U, st[z].U, pl[z].U );}
 
   add_m( pl[0].U, pl[1].U, pl[0].U );
   S_plaq = 2. - creal( trace( pl[0].U ) )/( (double) Nc );

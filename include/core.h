@@ -7,14 +7,13 @@
 
 /*-----------------------------------------------------------------------------------------------*/
 
-#define NX 10
+#define NX 16
 #define DIM 4
 
 typedef struct Group { double complex U[Nc][Nc]; } Group;
 
 /*-----------------------------------------------------------------------------------------------*/
 
-extern double complex link[NX][NX][NX][NX][4]        ;   // N**4 array
 extern Group         *ulinks                    ;
 extern int            calls                      ;   // MC calls
 extern int            zn                         ;   // if 0 --> U(1)
@@ -58,13 +57,14 @@ inline void shift_x( int x[DIM], int mu, int steps) {
 
 /*-----------------------------------------------------------------------------------------------*/
 
+// Z_n and U(1) groups ``simple''
 Group *init(int);
 double update_Zn(double, Group *, int *, int );
 double sweep_Zn( double, Group * );
 
-double update(double, Group *, int *, int );
+// SU(Nc) group
 Group *init_COLD();
 Group *init_HOT ();
-
+double update(double, Group *, int *, int );
 double sweep(double, Group *);
 
