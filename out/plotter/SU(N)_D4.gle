@@ -6,6 +6,11 @@ set hei 0.6
 
 amove 2.5 1.5
 set texlabels 1
+begin texpreamble
+  \usepackage{amsmath}
+  \usepackage{amssymb}
+  \usepackage{eucal}
+end texpreamble
 begin graph
   size 11 6 fullsize
 
@@ -17,18 +22,20 @@ begin graph
 
   xaxis min -0.5 max 10.5 dticks 2 dsubticks .5
   xtitle "$\beta$" hei 0.5 font psncsi dist 0.3
-  yaxis min -0.1 max 1.0 dticks .2 dsubticks .05
-  ytitle "$\left< E \right>$" hei 0.6 font psncsi dist 0.3
+  yaxis min -0.1 max 1.3 dticks .2 dsubticks .05
+  ytitle "$\left< S \right>/{\cal N}_\square$" hei 0.6 font psncsi dist 0.3
 
   let d4 = 0               from 0 to 10
-  let d3 = 3./(4.*x)        from 4.8 to 10
-  let d2 = 1.-(x/(4.))        from 0 to 3.2
-  data "../data/SU(2)_heat_(d=4, NX=6).csv" comment # d11 = c1, c2
-  data "../data/SU(2)_cool_(d=4, NX=6).csv" comment # d12 = c1, c2
+ ! let d3 = 2./(x)        from 4.5 to 10
+ ! let d2 = 1.-(x/(18.))-x*x/216.        from 0 to 5.5
+  let d3 = 3./(4.*x)        from 4.5 to 10
+  let d2 = 1.-(x/(4.))        from 0 to 2.5
+  data "../data/SU(2)_heat_(d=4, NX=8).csv" comment # d11 = c1, c2
+  data "../data/SU(2)_cool_(d=4, NX=8).csv" comment # d12 = c1, c2
 
   d4 line             color 0.8 lstyle 1 lwidth 0.05
-  d3 line             color .5 lstyle 1 lwidth 0.03
-  d2 line             color .5 lstyle 1 lwidth 0.03
+  d3 line             color black lstyle 2 lwidth 0.04
+  d2 line             color black lstyle 2 lwidth 0.04
   d11 marker fcircle  color crimson     lwidth 0.05 msize .1
   d12 marker circle color royalblue  lwidth 0.03 msize .25
 end graph
@@ -53,6 +60,6 @@ box 2.9 1.6 fill aliceblue round .1 nostroke
 rmove 0.45 1.
 text  \tex{$SU(2)$ group} 
 rmove 0.1 -.6
-text  \tex{$4^4$ lattice} 
+text  \tex{$8^4$ lattice} 
 
 

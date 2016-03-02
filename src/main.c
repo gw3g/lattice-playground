@@ -13,7 +13,7 @@
 
 /* external parameters */
 
-int        calls = 200                    ;   // MC calls
+int        calls = 100                    ;   // MC calls
 int        zn    = 2                       ;   // if 0 --> U(1)
 Group     *ulinks                          ;   // the lattice
 
@@ -29,16 +29,16 @@ void iter_SUn( double beta, int cls);
 int main() {
 
   srand(time(NULL))    ;
-  //eval_Zn(.0, 2.);
-  //eval_Zn(2., .0);
+  //eval_Zn(.0, 1.);
+  //eval_Zn(1., .0);
 
-  //eval_U1(.0, 4.);
-  //eval_U1(4., .0);
+  eval_U1(.0, 4.);
+  eval_U1(4., .0);
 
   /*view_m(ulinks[1].U);*/
 
-  eval_SUn(10., .0);
-  eval_SUn(.0, 10.);
+  //eval_SUn(10., .0);
+  //eval_SUn(.0, 10.);
 /*
   double b =5, db=.2, s;
   for (int i=0; i<30; b+=db, i++) {
@@ -61,7 +61,7 @@ int main() {
 
 /*double db = .05;*/
 void therm( double, double ); // --- for thermometer bar
-int Nbeta = 20;
+int Nbeta = 40;
 FILE *file; char fname[40];
 
 void eval_Zn( double Bi, double Bf) {
@@ -118,10 +118,10 @@ void eval_U1( double Bi, double Bf) {
   fprintf(file,   "#\n"                                                                   );
   fprintf(file,   "# beta,    action  \n"                                                 );
 
-  for (int i=0; i<Nbeta; beta+=db, i++) 
+  for (int i=0; i<Nbeta+1; i++) 
       {   S = sweep_Zn(beta, ulinks);
           therm(S, beta ); 
-          fprintf(file, "%.8f, %.8f\n", beta, S );
+          fprintf(file, "%.8f, %.8f\n", beta, S ); beta+=db;
           /*printf(       "%.8f, %.8f\n", beta, S );    }*/
       }
  
@@ -139,7 +139,7 @@ void eval_SUn( double Bi, double Bf) {
   }
   else if (Bi>Bf) {                                                 // HEATING
     sprintf(fname, "out/data/SU(%d)_heat_(d=%d, NX=%d).csv", Nc, DIM, NX);
-    ulinks = init_COLD( ); printf("\n :: HEATING :: \n ");
+    ulinks = init_HOT( ); printf("\n :: HEATING :: \n ");
   }
 
   file = fopen(fname, "w+");
@@ -149,10 +149,10 @@ void eval_SUn( double Bi, double Bf) {
   fprintf(file,   "#\n"                                                                   );
   fprintf(file,   "# beta,    action  \n"                                                 );
 
-  for (int i=0; i<Nbeta; beta+=db, i++) 
+  for (int i=0; i<Nbeta+1; i++) 
       {   S = sweep(beta, ulinks);
           fprintf(file, "%.8f, %.8f\n", beta, S );
-          therm(S, beta ); 
+          therm(S, beta ); beta+=db;
           /*printf(       "%.8f, %.8f\n", beta, S );    */
       }; printf("\n");
  
