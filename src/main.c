@@ -35,8 +35,6 @@ int main() {
   eval_U1(.0, 4.);
   eval_U1(4., .0);
 
-  /*view_m(ulinks[1].U);*/
-
   //eval_SUn(10., .0);
   //eval_SUn(.0, 10.);
 /*
@@ -45,14 +43,6 @@ int main() {
     s = monte(b, ulinks, &action);
     printf("%g,  %g \n", b, s);
   } */
-
-  /*int x[4] = {1,2,2,2};*/
-
-  /*update(2.,  ulinks, x, 1);*/
-
-  /*calls = 10000000;*/
-  /*eval_U1(4., .0, 4);*/
-  /*eval_U1(0., 4., 4);*/
 
   return 0;
 }
@@ -68,15 +58,15 @@ void eval_Zn( double Bi, double Bf) {
   ulinks = init(1);
 
   double beta=Bi, S, db=(Bf-Bi)/( (double) Nbeta );
-  printf("\n d = %d lattice (NX=%d) w/ Z_%d gauge group \n", DIM, NX, zn);
+  printf("\nDETAILS: d = %d lattice (NX=%d) w/ Z_%d gauge group \n", DIM, NX, zn);
 
   if (Bi<Bf) {                                                      // COOLING
     sprintf(fname, "out/data/Z%d_cool_(d=%d, NX=%d).csv", zn, DIM, NX);
-    printf("\n :: COOLING :: \n");
+    printf("\n :: COOLING :: \n\n");
   }
   else if (Bi>Bf) {                                                 // HEATING
     sprintf(fname, "out/data/Z%d_heat_(d=%d, NX=%d).csv", zn, DIM, NX);
-    printf("\n :: HEATING :: \n");
+    printf("\n :: HEATING :: \n\n");
   }
 
   file = fopen(fname, "w+");
@@ -86,10 +76,10 @@ void eval_Zn( double Bi, double Bf) {
   fprintf(file,   "#\n"                                                                   );
   fprintf(file,   "# beta,    action  \n"                                                 );
 
-  for (int i=0; i<Nbeta; beta+=db, i++) 
+  for (int i=0; i<Nbeta+1; i++) 
       {   S = sweep_Zn(beta, ulinks);
           therm(S, beta ); 
-          fprintf(file, "%.8f, %.8f\n", beta, S );
+          fprintf(file, "%.8f, %.8f\n", beta, S ); beta+=db;
           /*printf(       "%.8f, %.8f\n", beta, S );    }*/
       }
  
@@ -100,15 +90,15 @@ void eval_U1( double Bi, double Bf) {
   zn=0; ulinks = init(1);
 
   double beta=Bi, S, db=(Bf-Bi)/( (double) Nbeta );
-  printf("\n d = %d lattice (NX=%d) w/ U(1) gauge group \n", DIM, NX);
+  printf("\nDETAILS: d = %d lattice (NX=%d) w/ U(1) gauge group \n", DIM, NX);
 
   if (Bi<Bf) {                                                      // COOLING
     sprintf(fname, "out/data/U(1)_cool_(d=%d, NX=%d).csv", DIM, NX);
-    printf("\n :: COOLING :: \n");
+    printf("\n :: COOLING :: \n\n");
   }
   else if (Bi>Bf) {                                                 // HEATING
     sprintf(fname, "out/data/U(1)_heat_(d=%d, NX=%d).csv", DIM, NX);
-    printf("\n :: HEATING :: \n");
+    printf("\n :: HEATING :: \n\n");
   }
 
   file = fopen(fname, "w+");
@@ -131,15 +121,15 @@ void eval_U1( double Bi, double Bf) {
 void eval_SUn( double Bi, double Bf) {
 
   double beta=Bi, S, db=(Bf-Bi)/( (double) Nbeta );
-  printf("\n d = %d lattice (NX=%d) w/ SU(%d) gauge group \n", DIM, NX, Nc);
+  printf("\nDETAILS: d = %d lattice (NX=%d) w/ SU(%d) gauge group \n", DIM, NX, Nc);
 
   if (Bi<Bf) {                                                      // COOLING
     sprintf(fname, "out/data/SU(%d)_cool_(d=%d, NX=%d).csv", Nc, DIM, NX);
-    ulinks = init_HOT( ); printf("\n :: COOLING :: \n");
+    ulinks = init_HOT( ); printf("\n :: COOLING :: \n\n");
   }
   else if (Bi>Bf) {                                                 // HEATING
     sprintf(fname, "out/data/SU(%d)_heat_(d=%d, NX=%d).csv", Nc, DIM, NX);
-    ulinks = init_HOT( ); printf("\n :: HEATING :: \n ");
+    ulinks = init_HOT( ); printf("\n :: HEATING :: \n\n");
   }
 
   file = fopen(fname, "w+");
@@ -161,7 +151,7 @@ void eval_SUn( double Bi, double Bf) {
 
 void iter_SUn( double beta, int cls) {
 
-  printf("\n d = %d lattice (NX=%d) w/ SU(%d) gauge group \n", DIM, NX, Nc);
+  printf("\nDETAILS: d = %d lattice (NX=%d) w/ SU(%d) gauge group \n", DIM, NX, Nc);
 
   sprintf(fname, "out/data/SU(%d)_beta=%.2f_(d=%d, NX=%d).csv", Nc, beta, DIM, NX);
   ulinks = init_COLD( );

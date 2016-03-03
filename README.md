@@ -6,6 +6,9 @@ Simple gauge theories on the [lattice](https://xkcd.com/505/).
 
 following original `roots' of lattice qcd: [Mike Creutz et al, PRL 1979](http://thy.phy.bnl.gov/~creutz/mypubs/pub031.pdf)
 
+The lattice is stored as a ``NX^DIM`` pointer array of Group ``(struct)``.
+elements. 
+
 ## observables
 
 Calculating the average plaquette energy is perhaps the most straighforward _measurement_. The action is normalised so that the average plaquette energy is 1 for beta=0 and 0 for low temperature.
