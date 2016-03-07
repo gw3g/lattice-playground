@@ -17,11 +17,11 @@ begin graph
   yticks length 0.25
 
   xaxis min -3 max 3 dticks 2
-  xtitle "\tex{$\Re\ \mathrm{tr} (\widehat{u})$}" hei 0.5 font psncsi dist 0.4
+  xtitle "\tex{$\Re\ \mathrm{tr} (\ \widehat{U}\ )$}" hei 0.5 font psncsi dist 0.4
   yaxis min -3 max 3 dticks 2
-  ytitle "\tex{$\Im\ \mathrm{tr} (\widehat{u})$}" hei 0.6 font psncsi dist 0.2
+  ytitle "\tex{$\Im\ \mathrm{tr} (\ \widehat{U}\ )$}" hei 0.6 font psncsi dist 0.2
   
-  data "../data/tr_U, Nc=4.csv" comment # d1=c1,c2
+  data "../data/tr_U, Nc=3.csv" comment # d1=c1,c2
 
   set lwidth 0.05
   draw polar_grid radius 2.6 rings 3 sectors 12 color lightgray

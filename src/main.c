@@ -13,7 +13,7 @@
 
 /* external parameters */
 
-int        calls = 100                    ;   // MC calls
+int        calls = 1000                   ;   // MC calls
 int        zn    = 2                       ;   // if 0 --> U(1)
 Group     *ulinks                          ;   // the lattice
 
@@ -29,8 +29,29 @@ void iter_SUn( double beta, int cls);
 int main() {
 
   srand(time(NULL))    ;
-  //eval_Zn(.0, 1.);
-  //eval_Zn(1., .0);
+  eval_Zn(.0, 1.);
+  eval_Zn(1., .0);
+
+  zn = 3;
+  eval_Zn(.0, 2.);
+  eval_Zn(2., .0);
+  zn = 4;
+  eval_Zn(.0, 2.);
+  eval_Zn(2., .0);
+
+  zn = 5;
+  eval_Zn(.0, 3.);
+  eval_Zn(3., .0);
+  zn = 6;
+  eval_Zn(.0, 3.);
+  eval_Zn(3., .0);
+
+  zn = 7;
+  eval_Zn(.0, 4.);
+  eval_Zn(4., .0);
+  zn = 8;
+  eval_Zn(.0, 4.);
+  eval_Zn(4., .0);
 
   eval_U1(.0, 4.);
   eval_U1(4., .0);

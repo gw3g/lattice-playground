@@ -57,7 +57,7 @@ int main() {
   fprintf(file, "#\n");
 
   double complex aa[Nc][Nc], tr;
-  for (int l=1; l<8000; l++) {
+  for (int l=1; l<2000; l++) {
     for (int i=0; i<Nc; i++)
       for (int j=0; j<Nc; j++)
         aa[i][j] = ( rand()/((double) RAND_MAX)-.5 ) + I*( rand()/((double) RAND_MAX)-.5 );
