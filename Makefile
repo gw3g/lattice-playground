@@ -28,6 +28,8 @@ clean:
 
 plotter1:
 	gle -o "out/Z2_D4.pdf" -d pdf "out/plotter/Z2_D4.gle"
+ZN:
+	gle -o "out/Zn_D4.pdf" -d pdf "out/plotter/Zn_D4.gle"
 plotter2:
 	gle -o "out/compare_DIM.pdf" -d pdf "out/plotter/compare_DIM.gle"
 plotter3:

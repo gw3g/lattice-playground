@@ -1,0 +1,99 @@
+size  11 24
+set lwidth 0.04
+set cap round
+!set font psncsi
+set hei 0.7
+
+set texlabels 1
+begin texpreamble
+  \usepackage{amsmath}
+  \usepackage{amssymb}
+  \usepackage{eucal}
+end texpreamble
+
+sub drawG xi yi n
+amove xi yi
+begin graph
+  size 7.5 3 fullsize
+
+  xlabels font psncsr hei 0.5
+  xticks length 0.25
+  ylabels font psncsr hei 0.5
+  yticks length 0.15
+  xlabels off
+  xaxis grid color .8  lwidth .03
+  !subticks lstyle 3
+  xaxis dticks 1
+
+  xaxis min -0.2 max 4.2 ! dticks 1.
+  !xtitle "$\beta$" hei 0.5 font psncsi dist 0.3
+  yaxis min -0.2 max 1.2 dticks 1
+  !ytitle "$\left< S \right>/{\cal N}_\square $" hei 0.6 font psncsi dist 0.1
+  y2title "$P=$"+num$(n)
+
+  data "../data/Z"+num$(n)+"_heat_(d=4, NX=16).csv" comment # d11 = c1, c2
+  data "../data/Z"+num$(n)+"_cool_(d=4, NX=16).csv" comment # d12 = c1, c2
+
+  !d3 line             color 0.8 lstyle 1 lwidth 0.05
+  d11 line smooth color crimson    lstyle 1 lwidth 0.06
+  d12 line smooth color royalblue lstyle 2 lwidth 0.06
+end graph
+end sub
+
+drawG 2 20 2
+drawG 2 17 3
+
+set hei 0.5
+set font psncsr
+begin key
+  compact
+  position tr
+  nobox
+  offset 0.4 .2
+  text "heating"  line lstyle 1 color crimson     lwidth 0.06 msize .15
+  text "cooling"  line lstyle 2 color royalblue   lwidth .06 msize .25
+end key
+
+drawG 2 14 4
+drawG 2 11 5
+drawG 2 8 6
+drawG 2 5 7
+drawG 2 2 8
+
+
+set hei 0.5
+
+amove 6. 20.7
+box 2.9 1.7 fill lavender round .1 nostroke
+rmove -0.07 0.1
+box 2.9 1.7 fill aliceblue round .1 nostroke
+rmove 0.45 1.
+text  \tex{$\ \mathbb{Z}_P$ group} 
+rmove 0 -.6
+text  \tex{$16^4$ lattice} 
+
+
+set lwidth .05
+set color .9
+amove xg(.5*log(1+sqrt(2.))) yg(-.05)
+rmove -0.7 .6
+set color .5
+
+set color black
+amove 2 2
+begin graph
+  size 7.5 3 fullsize
+
+  xlabels font psncsr hei 0.5
+  xticks length 0.25
+  ylabels font psncsr hei 0.5
+  yticks length 0.15
+  x2axis off
+  xaxis dsubticks .2
+
+  xaxis min -0.2 max 4.2  dticks 1.
+  xtitle "$\beta$" hei 0.5 font psncsi dist 0.3
+  yaxis min -0.2 max 1.2 dticks 1
+  ytitle "$\left< S \right>/{\cal N}_\square $" hei 0.6 font psncsi dist 0.1
+end graph
+
