@@ -13,7 +13,7 @@
 
 /* external parameters */
 
-int        calls = 1000                   ;   // MC calls
+int        calls = 10                     ;   // MC calls
 int        zn    = 2                       ;   // if 0 --> U(1)
 Group     *ulinks                          ;   // the lattice
 
@@ -23,12 +23,16 @@ void eval_U1  ( double Bi, double Bf);
 void eval_SUn ( double Bi, double Bf);
 
 void iter_SUn( double beta, int cls);
+void wilson(   double beta );
 
 /*-----------------------------------------------------------------------------------------------*/
 
 int main() {
 
   srand(time(NULL))    ;
+  /*iter_SUn( .2, 10);*/
+  wilson(.2);
+  /*
   eval_Zn(.0, 1.);
   eval_Zn(1., .0);
 
@@ -55,9 +59,10 @@ int main() {
 
   eval_U1(.0, 4.);
   eval_U1(4., .0);
+  */
 
-  //eval_SUn(10., .0);
-  //eval_SUn(.0, 10.);
+  /*eval_SUn(10., .0);*/
+  /*eval_SUn(.0, 10.);*/
 /*
   double b =5, db=.2, s;
   for (int i=0; i<30; b+=db, i++) {
@@ -190,9 +195,41 @@ void iter_SUn( double beta, int cls) {
           therm(S, beta ); 
           /*printf(       "%.8f, %.8f\n", beta, S );    */
       }; printf("\n");
+
+  printf( "W(3,4) = %g\n", Wloop(3,4,ulinks) );
  
   fclose(file); free(ulinks);                                                               return;
 }
+
+void wilson( double beta ) {
+
+  printf("\nDETAILS: d = %d lattice (NX=%d) w/ SU(%d) gauge group \n", DIM, NX, Nc);
+
+  sprintf(fname, "out/data/WILSON_beta=%.2f_(d=%d, NX=%d).csv", beta, DIM, NX);
+  ulinks = init_HOT( );
+
+  file = fopen(fname, "w+");
+
+  fprintf(file,   "# d=%d lattice, w/ group action SU(%d) \n",   DIM, Nc                  );
+  fprintf(file,   "#\n"                                                                   );
+  fprintf(file,   "# R, T, tr(W)      \n"                                                 );
+
+  double S;
+  for (int i=0; i<20; i++) 
+      {   S = sweep(beta, ulinks);
+          therm(S, beta ); 
+      };  printf("\n");
+
+  double w;
+  for (int R=1; R<NX; R++) for (int T=1; T<NX; T++) {
+    w = Wloop( R, T, ulinks );
+    printf( "W(%d,%d) = %g\n",      R, T, w );
+    fprintf(file, "%d, %d, %.8f\n", R, T, w );
+  }
+ 
+  fclose(file); free(ulinks);                                                               return;
+}
+
 
 
 /*-----------------------------------------------------------------------------------------------*/

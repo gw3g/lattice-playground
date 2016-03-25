@@ -7,7 +7,7 @@
 
 /*-----------------------------------------------------------------------------------------------*/
 
-#define NX 16
+#define NX 4
 #define DIM 4
 
 typedef struct Group { double complex U[Nc][Nc]; } Group;
@@ -67,4 +67,5 @@ Group *init_COLD();
 Group *init_HOT ();
 double update(double, Group *, int *, int );
 double sweep(double, Group *);
+double Wloop( int,int, Group *);
 

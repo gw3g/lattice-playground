@@ -162,3 +162,31 @@ double sweep( double beta, Group *lattice) {
   /*return action;*/
 }
 
+double Wloop( int R, int T, Group *lattice ) {
+  int mu = 0, nu = 1, nsites=1;
+  Group line;
+  int link, x[DIM];
+  double complex tr = 0.;
+  for (int i=0; i<nsites; i++) {
+    xMu(i, x);
+    // consider loop with one corner here
+    equ_m(1., line.U);
+    for (int r=0; r<R; r++) {
+      // TODO: code getting stuck here ...
+      link = Idx(x,mu); 
+      printf("test");
+      mul_m(line.U, lattice[link].U, line.U); shift_x( x, mu, +1);
+    }
+    for (int t=0; t<T; T++) {
+      link = Idx(x,nu); mul_m(line.U, lattice[link].U, line.U); shift_x( x, nu, +1);
+    }
+    for (int r=R; r>0; r--) {
+      link = Idx(x,mu); mul_m(line.U, lattice[link].U, line.U); shift_x( x, mu, -1);
+    }
+    for (int t=T; t>0; t--) {
+      link = Idx(x,nu); mul_m(line.U, lattice[link].U, line.U); shift_x( x, nu, -1);
+    }
+    tr += trace(line.U);
+  }
+  return creal(tr)/( (double) nsites );
+}
