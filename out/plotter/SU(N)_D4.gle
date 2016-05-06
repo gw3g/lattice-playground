@@ -31,7 +31,7 @@ begin graph
   let d3 = 3./(4.*x)        from 4.5 to 10
   let d2 = 1.-(x/(4.))        from 0 to 2.5
   data "../data/SU(2)_heat_(d=4, NX=8).csv" comment # d11 = c1, c2
-  data "../data/SU(2)_cool_(d=4, NX=8).csv" comment # d12 = c1, c2
+  data "../data/SU(2)_cool_(d=4, NX=16).csv" comment # d12 = c1, c2
 
   d4 line             color 0.8 lstyle 1 lwidth 0.05
   d3 line             color black lstyle 2 lwidth 0.04

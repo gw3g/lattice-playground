@@ -7,7 +7,7 @@
 
 /*-----------------------------------------------------------------------------------------------*/
 
-#define NX 4
+#define NX 16
 #define DIM 4
 
 typedef struct Group { double complex U[Nc][Nc]; } Group;

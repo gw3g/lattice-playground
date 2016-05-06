@@ -13,7 +13,7 @@
 
 /* external parameters */
 
-int        calls = 10                     ;   // MC calls
+int        calls = 1000                     ;   // MC calls
 int        zn    = 2                       ;   // if 0 --> U(1)
 Group     *ulinks                          ;   // the lattice
 
@@ -31,7 +31,7 @@ int main() {
 
   srand(time(NULL))    ;
   /*iter_SUn( .2, 10);*/
-  wilson(.2);
+  /*wilson(9.);*/
   /*
   eval_Zn(.0, 1.);
   eval_Zn(1., .0);
@@ -41,8 +41,7 @@ int main() {
   eval_Zn(2., .0);
   zn = 4;
   eval_Zn(.0, 2.);
-  eval_Zn(2., .0);
-
+  eval_Zn(2., .0); 
   zn = 5;
   eval_Zn(.0, 3.);
   eval_Zn(3., .0);
@@ -61,8 +60,8 @@ int main() {
   eval_U1(4., .0);
   */
 
-  /*eval_SUn(10., .0);*/
-  /*eval_SUn(.0, 10.);*/
+  eval_SUn(10., .0);
+  eval_SUn(.0, 10.);
 /*
   double b =5, db=.2, s;
   for (int i=0; i<30; b+=db, i++) {
@@ -77,7 +76,7 @@ int main() {
 
 /*double db = .05;*/
 void therm( double, double ); // --- for thermometer bar
-int Nbeta = 40;
+int Nbeta = 10;
 FILE *file; char fname[40];
 
 void eval_Zn( double Bi, double Bf) {
@@ -163,14 +162,22 @@ void eval_SUn( double Bi, double Bf) {
   fprintf(file,   "# d=%d lattice, w/ group action SU(%d) \n",   DIM, Nc                  );
   fprintf(file,   "# MC calls %d\n", calls                                                );
   fprintf(file,   "#\n"                                                                   );
-  fprintf(file,   "# beta,    action  \n"                                                 );
+  fprintf(file,   "# beta,    action,   <L> {2,4,...}\n"                                  );
 
+  double W1, W2, W3;
   for (int i=0; i<Nbeta+1; i++) 
-      {   S = sweep(beta, ulinks);
-          fprintf(file, "%.8f, %.8f\n", beta, S );
+      {   W1 = 0.; W2 = 0.; W3 = 0.;
+          for (int trial=0; trial<10; trial++) {
+            S = sweep(beta, ulinks);
+            W1 += Wloop(0,1, ulinks)/10.;
+            W2 += Wloop(0,2, ulinks)/10.;
+            W3 += Wloop(0,3, ulinks)/10.;
+          }
+          fprintf(file, "%.8f, %.8f, %.8f, %.8f, %.8f\n", beta, S, W1, W2, W3 );
           therm(S, beta ); beta+=db;
           /*printf(       "%.8f, %.8f\n", beta, S );    */
       }; printf("\n");
+  /*printf("<L>=%g\n", Wloop(0,2,ulinks) );*/
  
   fclose(file); free(ulinks);                                                               return;
 }
@@ -221,11 +228,12 @@ void wilson( double beta ) {
       };  printf("\n");
 
   double w;
-  for (int R=1; R<NX; R++) for (int T=1; T<NX; T++) {
+  for (int R=0; R<NX; R++) for (int T=0; T<NX; T++) {
     w = Wloop( R, T, ulinks );
     printf( "W(%d,%d) = %g\n",      R, T, w );
     fprintf(file, "%d, %d, %.8f\n", R, T, w );
   }
+
  
   fclose(file); free(ulinks);                                                               return;
 }
