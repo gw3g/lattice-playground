@@ -59,13 +59,13 @@ inline void shift_x( int x[DIM], int mu, int steps) {
 
 // Z_n and U(1) groups ``simple''
 Group *init(int);
-double update_Zn(double, Group *, int *, int );
-double sweep_Zn( double, Group * );
+float update_Zn(float, Group *, int *, int );
+float sweep_Zn( float, Group * );
 
 // SU(Nc) group
 Group *init_COLD();
 Group *init_HOT ();
-double update(double, Group *, int *, int );
-double sweep(double, Group *);
-double Wloop( int,int, Group *);
+float update(float, Group *, int *, int );
+float sweep(float, Group *);
+float Wloop( int,int, Group *);
 
