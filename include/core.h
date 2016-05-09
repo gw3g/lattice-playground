@@ -10,7 +10,7 @@
 #define NX 16
 #define DIM 4
 
-typedef struct Group { double complex U[Nc][Nc]; } Group;
+typedef struct Group { cuComplex U[Nc][Nc]; } Group;
 
 /*-----------------------------------------------------------------------------------------------*/
 
