@@ -16,6 +16,7 @@
 int        calls = 1000                     ;   // MC calls
 int        zn    = 2                       ;   // if 0 --> U(1)
 Group     *ulinks                          ;   // the lattice
+int SHAPE[DIM] = {6,NX,NX,NX};
 
 
 void eval_Zn  ( double Bi, double Bf);

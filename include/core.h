@@ -10,6 +10,9 @@
 #define NX 16
 #define DIM 4
 
+extern int SHAPE[DIM];
+//= {6,NX,NX,NX};
+
 typedef struct Group { double complex U[Nc][Nc]; } Group;
 
 /*-----------------------------------------------------------------------------------------------*/
@@ -29,7 +32,7 @@ extern int            zn                         ;   // if 0 --> U(1)
 inline int sites() {
   // --- number of sites ~ NX^DIM
   int o = 1;
-  for (int i=0; i<DIM; i++) o *= NX;
+  for (int i=0; i<DIM; i++) o *= SHAPE[i];
   return o;
 }
 
@@ -37,21 +40,21 @@ inline int Idx(int x[DIM], int mu) {
   // --- lattice index from coordinates & direction
   int offset=0, nsites=1;
   for (int i=0; i<DIM; i++) {    offset += x[i]*nsites;
-                                 nsites *= NX;               };
+                                 nsites *= SHAPE[i];               };
   return offset + mu*nsites;
 }
 
 inline int xMu(int idx, int x[DIM]) {
   // --- returns mu and modifies x[..]
   int tI = idx;
-  for (int i=0; i<DIM; i++) {     x[i]  = tI%NX;
-                                  tI   /= NX;        };
+  for (int i=0; i<DIM; i++) {     x[i]  = tI%SHAPE[i];
+                                  tI   /= SHAPE[i];        };
   return tI;
 }
 
 inline void shift_x( int x[DIM], int mu, int steps) {
   // --- shifts coordinates in mu direction
-  x[mu] = (x[mu]+steps+NX)%NX;
+  x[mu] = (x[mu]+steps+SHAPE[mu])%SHAPE[mu];
   return;
 }
 
